@@ -83,11 +83,19 @@ const router = createRouter({
 			}
 		},
 		{
-			path: '/sideMenu',
+			path: '/sichuanCuisine/combo/sideMenu',
 			name: 'SideMenu',
 			component: () => import('@/views/SideMenuEX.vue'),
 			meta: {
 				desc: '左侧菜单'
+			}
+		},
+		{
+			path: '/sichuanCuisine/combo/twiceCookedPork/sideMenuPro',
+			name: 'SideMenuPro',
+			component: () => import('@/views/SideMenuProEX.vue'),
+			meta: {
+				desc: '左侧菜单Pro'
 			}
 		},
 		{

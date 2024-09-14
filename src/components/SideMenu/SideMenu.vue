@@ -5,8 +5,9 @@
 <script lang="ts" setup>
 	import t from '../../locale/i18nSFC'
 	import SideMenuGroup from './SideMenuGroup.vue'
+	import { setTimeout } from '../../utils/timer'
 
-	const props = withDefaults(defineProps<{ data?: any[] }>(), { data: () => [] })
+	const props = withDefaults(defineProps<{ data?: any[]; light?: boolean }>(), { data: () => [] })
 	const emit = defineEmits(['on-change'])
 	const route = useRoute()
 
@@ -31,7 +32,9 @@
 		() => route.path,
 		(after) => {
 			pathName.value = after
-			nextTick(addOpen)
+			nextTick(() => {
+				setTimeout(addOpen, 10)
+			})
 		},
 		{ immediate: true }
 	)
@@ -52,7 +55,7 @@
 	}
 </script>
 <template>
-	<div ref="menuRef" class="menuBoxRP">
+	<div ref="menuRef" :class="['menuBoxRP', 'cannotSelect', { light: light }]">
 		<div class="menuListR" v-show="menuDisplay">
 			<side-menu-group :data="props.data" :pathName="pathName" />
 		</div>
