@@ -1,3 +1,6 @@
+<!--SideMenuProGroup
+@created 2024.09.14
+@author Ricky email:zhangqingcq@foxmail.com-->
 <script lang="ts" setup>
 	const router = useRouter()
 	const props = withDefaults(defineProps<{ data?: any[]; pathName?: string }>(), {
