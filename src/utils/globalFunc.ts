@@ -363,7 +363,7 @@ export function tooltipManual(
 			content = params.row?.[contentKey]
 		}
 
-		return h(TableTooltip, { content: dash ? (content === '' ? '--' : content ?? '--') : content })
+		return h(TableTooltip, { content: dash ? (content === '' ? '--' : (content ?? '--')) : content })
 	}
 }
 

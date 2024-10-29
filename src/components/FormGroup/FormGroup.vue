@@ -22,6 +22,7 @@
 			okBtTxt?: string
 			cancelBtTxt?: string
 			btnLoading?: boolean
+			disabled?: boolean /*组件禁用（只展示信息）*/
 		}>(),
 		{
 			formData: () => [],
@@ -31,7 +32,8 @@
 			itemWidth: 200,
 			showOkBt: true,
 			showCancelBt: true,
-			btnLoading: false
+			btnLoading: false,
+			disabled: false
 		}
 	)
 
@@ -171,6 +173,7 @@
 			:content-width="props.contentWidth"
 			:item-width="props.itemWidth"
 			:btnLoading="props.btnLoading"
+			:disabled="props.disabled"
 			@on-submit="onSubmit"
 		>
 			<template #[item.slotName]="{ valGroup }" v-for="item in formDataC">
@@ -188,6 +191,7 @@
 					class="form-save-btn"
 					v-if="props.showOkBt"
 					:loading="props.btnLoading && showLoading"
+					:disabled="props.disabled"
 					>{{ props.okBtTxt || t('r.confirm') }}</Button
 				>
 				<Button @click="close" class="form-cancel-btn" v-if="props.showCancelBt">{{

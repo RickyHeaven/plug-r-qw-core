@@ -49,7 +49,7 @@
 		<span ref="spanRef" v-if="tooltipDisabled" class="contentText">{{ props.content }}</span>
 		<Tooltip
 			v-else
-			:content="typeof props.content === 'boolean' ? String(props.content) : props.content ?? ''"
+			:content="typeof props.content === 'boolean' ? String(props.content) : (props.content ?? '')"
 			:max-width="maxWidth"
 			transfer
 		>

@@ -1541,6 +1541,7 @@ showCancelBt?: boolean | undefined;
 okBtTxt?: string | undefined;
 cancelBtTxt?: string | undefined;
 btnLoading?: boolean | undefined;
+disabled?: boolean | undefined;
 }>, {
 formData: () => never[];
 with: () => any;
@@ -1550,6 +1551,7 @@ itemWidth: number;
 showOkBt: boolean;
 showCancelBt: boolean;
 btnLoading: boolean;
+disabled: boolean;
 }>, {
 resetForm: typeof resetForm_2;
 refreshFormDom: typeof refreshFormDom_2;
@@ -1576,6 +1578,7 @@ showCancelBt?: boolean | undefined;
 okBtTxt?: string | undefined;
 cancelBtTxt?: string | undefined;
 btnLoading?: boolean | undefined;
+disabled?: boolean | undefined;
 }>, {
 formData: () => never[];
 with: () => any;
@@ -1585,9 +1588,11 @@ itemWidth: number;
 showOkBt: boolean;
 showCancelBt: boolean;
 btnLoading: boolean;
+disabled: boolean;
 }>>> & {
 "onOn-cancel"?: ((...args: any[]) => any) | undefined;
 }, {
+disabled: boolean;
 labelWidth: number;
 itemWidth: number;
 formData: (FormItem | FormItem[])[];
@@ -1713,6 +1718,7 @@ cancelBtTxt?: string | undefined;
 hideCancelBt?: boolean | undefined;
 hideFooter?: boolean | undefined;
 btnLoading?: boolean | undefined;
+disabled?: boolean | undefined;
 }>, {
 formData: () => never[];
 width: () => any;
@@ -1720,6 +1726,7 @@ labelWidth: () => any;
 hideCancelBt: boolean;
 hideFooter: boolean;
 btnLoading: boolean;
+disabled: boolean;
 }>, {
 resetForm: typeof resetForm_4;
 refreshFormDom: typeof refreshFormDom_4;
@@ -1747,6 +1754,7 @@ cancelBtTxt?: string | undefined;
 hideCancelBt?: boolean | undefined;
 hideFooter?: boolean | undefined;
 btnLoading?: boolean | undefined;
+disabled?: boolean | undefined;
 }>, {
 formData: () => never[];
 width: () => any;
@@ -1754,10 +1762,12 @@ labelWidth: () => any;
 hideCancelBt: boolean;
 hideFooter: boolean;
 btnLoading: boolean;
+disabled: boolean;
 }>>> & {
 "onOn-open"?: ((...args: any[]) => any) | undefined;
 "onOn-close"?: ((...args: any[]) => any) | undefined;
 }, {
+disabled: boolean;
 width: string | number;
 labelWidth: number;
 formData: (FormItem | FormItem[])[];

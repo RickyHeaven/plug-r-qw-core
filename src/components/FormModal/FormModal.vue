@@ -21,6 +21,7 @@
 			hideCancelBt?: boolean /*隐藏取消按钮（只显示确定按钮，点击确定关闭弹框，如“查看”弹框）*/
 			hideFooter?: boolean /*隐藏底栏*/
 			btnLoading?: boolean /*提交按钮显示loading*/
+			disabled?: boolean /*组件禁用（只展示信息）*/
 		}>(),
 		{
 			formData: () => [],
@@ -28,7 +29,8 @@
 			labelWidth: () => Proxy().formModalLabelWidth,
 			hideCancelBt: false,
 			hideFooter: false,
-			btnLoading: false
+			btnLoading: false,
+			disabled: false
 		}
 	)
 
@@ -191,6 +193,7 @@
 			:form-data="props.formData"
 			:label-width="props.labelWidth"
 			:btnLoading="props.btnLoading"
+			:disabled="props.disabled"
 			@on-submit="onSubmit"
 		>
 			<template #[item.slotName]="{ valGroup }" v-for="item in formDataC">
@@ -198,9 +201,13 @@
 			</template>
 		</form-r>
 		<template #footer>
-			<Button @click="submit" class="modal-save-btn" :loading="props.btnLoading && showLoading">{{
-				props.okBtTxt || t('r.confirm')
-			}}</Button>
+			<Button
+				@click="submit"
+				class="modal-save-btn"
+				:loading="props.btnLoading && showLoading"
+				:disabled="props.disabled"
+				>{{ props.okBtTxt || t('r.confirm') }}</Button
+			>
 			<Button @click="close" class="modal-cancel-btn" v-if="!props.hideCancelBt">{{
 				props.cancelBtTxt || t('r.cancel')
 			}}</Button>
