@@ -12,7 +12,7 @@
 	import type { FormItem } from '../../public'
 	import ItemR from './ItemR.vue'
 
-	const emit = defineEmits(['on-item-change', 'on-reset', 'on-re-render', 'on-submit'])
+	const emit = defineEmits(['on-item-change', 'on-options-request-back', 'on-reset', 'on-re-render', 'on-submit'])
 	const props = withDefaults(
 		defineProps<{
 			formData?: Array<FormItem | FormItem[]> /*表单结构数据*/
@@ -929,6 +929,7 @@
 						)
 					}
 				}
+				emit('on-options-request-back', JSON.parse(JSON.stringify({ e: root, valGroup: valGroup.value })))
 			})
 			.catch(() => {
 				console.warn('拉取选项出错')

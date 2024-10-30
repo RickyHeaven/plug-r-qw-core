@@ -1825,6 +1825,7 @@ getValGroup: typeof getValGroup;
 submit: typeof submit;
 }, unknown, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
 "on-item-change": (...args: any[]) => void;
+"on-options-request-back": (...args: any[]) => void;
 "on-reset": (...args: any[]) => void;
 "on-re-render": (...args: any[]) => void;
 "on-submit": (...args: any[]) => void;
@@ -1863,6 +1864,7 @@ trim: boolean;
 teamClass: string;
 }>>> & {
 "onOn-item-change"?: ((...args: any[]) => any) | undefined;
+"onOn-options-request-back"?: ((...args: any[]) => any) | undefined;
 "onOn-reset"?: ((...args: any[]) => any) | undefined;
 "onOn-re-render"?: ((...args: any[]) => any) | undefined;
 "onOn-submit"?: ((...args: any[]) => any) | undefined;

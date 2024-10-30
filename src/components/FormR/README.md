@@ -95,6 +95,8 @@
 
 - on-item-change 表单项的值改变，返回对象，包含事件对象和改变的数据
 
+- on-options-request-back 远程选项拉取接口数据回来后emit事件，返回当前组件结构数据副本和formR的valGroup副本，以便用户实现相关逻辑
+
 - on-reset 表单被重置，清空按钮被点击时或主动调用重置方法时触发
 
 - on-re-render 表单被重新渲染
