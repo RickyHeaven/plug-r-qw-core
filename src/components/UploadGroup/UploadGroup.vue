@@ -437,7 +437,7 @@
 				>{{ t('r.selectFile') }}
 			</Button>
 		</Upload>
-		<div class="previewBoxM" v-show="previewType === 'img' && fileDefaultList?.length > 0">
+		<div class="previewBoxM" v-if="previewType === 'img' && fileDefaultList?.length > 0">
 			<template v-for="(item, index) of fileDefaultList" :key="item?.id">
 				<div
 					class="previewImg"
@@ -471,7 +471,7 @@
 				</div>
 			</template>
 		</div>
-		<div class="previewBoxM" v-show="previewType === 'localImg' && fileSrcList?.length > 0">
+		<div class="previewBoxM" v-if="previewType === 'localImg' && fileSrcList?.length > 0">
 			<template v-for="(item, index) of fileSrcList" :key="'manualImg' + index">
 				<div class="previewImg" v-if="props.manualUpload && item !== null">
 					<img :src="item" :alt="'manualImg' + index" />
@@ -488,7 +488,7 @@
 				</div>
 			</template>
 		</div>
-		<div class="customFileListM" v-show="previewType === 'localList' && fileList?.length > 0">
+		<div class="customFileListM" v-if="previewType === 'localList' && fileList?.length > 0">
 			<template v-for="(item, index) of fileList" :key="'manualItem' + index">
 				<p class="customFileListItem" v-if="props.manualUpload && item !== null">
 					<Icon v-if="item.name" class="fileTypeIco" :type="getFileTypeIconByName(item.name)" size="20" />
@@ -513,7 +513,7 @@
 				</p>
 			</template>
 		</div>
-		<div class="customFileListM" v-show="previewType === 'list' && fileDefaultList?.length > 0">
+		<div class="customFileListM" v-if="previewType === 'list' && fileDefaultList?.length > 0">
 			<template v-for="(item, index) of fileDefaultList" :key="'defaultItem' + index">
 				<div class="customFileListItem" v-if="!props.manualUpload && item">
 					<div class="listLoading" v-show="item.mimeType === 'loading'">
