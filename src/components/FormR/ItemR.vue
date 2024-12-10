@@ -377,5 +377,7 @@
 		<div v-if="Boolean(props.item.info)" class="formInfoTxtXN">{{ props.item.info }}</div>
 		<!--表单项标题-->
 		<div v-if="Boolean(props.item.title)" class="formTitleTxtXN">{{ props.item.title }}</div>
+		<!--给验证信息和表单内容间增加间隙-->
+		<span v-if="!props.inline" style="display: inline-block; width: 4px"></span>
 	</FormItem>
 </template>
