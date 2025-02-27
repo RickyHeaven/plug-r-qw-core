@@ -187,7 +187,7 @@
 							td = params.row[e.key]
 						}
 						if (props.tableEmptyTdHandle) {
-							return h('span', td === '' ? '--' : (td ?? '--'))
+							return h('span', td === '' ? '--' : td ?? '--')
 						}
 						return h('span', td)
 					}
@@ -201,11 +201,10 @@
 	const dataS = computed({
 		get() {
 			return dataT.value.map((e: Record<string, any>, i: number) => {
-				return {
+				return Object.assign({}, e, {
 					btKey: 'bt-' + i,
-					btChecked: false,
-					...e
-				}
+					btChecked: Boolean(e.btChecked)
+				})
 			})
 		},
 		set(v: any) {
