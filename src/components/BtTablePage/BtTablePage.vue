@@ -187,7 +187,7 @@
 							td = params.row[e.key]
 						}
 						if (props.tableEmptyTdHandle) {
-							return h('span', td === '' ? '--' : td ?? '--')
+							return h('span', td === '' ? '--' : (td ?? '--'))
 						}
 						return h('span', td)
 					}

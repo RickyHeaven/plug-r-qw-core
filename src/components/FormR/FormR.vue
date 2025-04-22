@@ -929,7 +929,15 @@
 						)
 					}
 				}
-				emit('on-options-request-back', JSON.parse(JSON.stringify({ e: root, valGroup: valGroup.value })))
+				emit(
+					'on-options-request-back',
+					JSON.parse(
+						JSON.stringify({
+							e: root,
+							valGroup: valGroup.value
+						})
+					)
+				)
 			})
 			.catch(() => {
 				console.warn('拉取选项出错')
@@ -1057,7 +1065,7 @@
 										t = targetOption.map((e) => e[l.valKey])
 										valGroup.value[l.key] = t
 										if (collectTempKey) {
-											tempKeys.value[collectTempKey] = t
+											tempKeys.value[collectTempKey.tempKey] = t
 										}
 									} else {
 										if (targetOption && isValidValue(targetOption[l.valKey])) {
@@ -1065,13 +1073,12 @@
 										}
 										valGroup.value[l.key] = t
 										if (collectTempKey) {
-											tempKeys.value[collectTempKey] = t
+											if (collectTempKey.booleanVal && typeof t === 'boolean') {
+												tempKeys.value[collectTempKey.tempKey] = t ? 1 : 0
+											} else {
+												tempKeys.value[collectTempKey.tempKey] = t
+											}
 										}
-									}
-
-									let sameKeyCom = findCollection(formDataT.value, (e) => e?.key === l.key)
-									if (sameKeyCom && sameKeyCom.tempKey) {
-										tempKeys.value[sameKeyCom.tempKey] = valGroup.value[l.key]
 									}
 								}
 							}
@@ -1085,7 +1092,7 @@
 									)
 									valGroup.value[root.collectLabel.key] = t
 									if (collectTempKey) {
-										tempKeys.value[collectTempKey] = t
+										tempKeys.value[collectTempKey.tempKey] = t
 									}
 								} else {
 									if (targetOption && isValidValue(targetOption[root.collectLabel.valKey])) {
@@ -1093,18 +1100,12 @@
 									}
 									valGroup.value[root.collectLabel.key] = t
 									if (collectTempKey) {
-										tempKeys.value[collectTempKey] = t
+										if (collectTempKey.booleanVal && typeof t === 'boolean') {
+											tempKeys.value[collectTempKey.tempKey] = t ? 1 : 0
+										} else {
+											tempKeys.value[collectTempKey.tempKey] = t
+										}
 									}
-								}
-
-								let sameKeyCom = findCollection(
-									formDataT.value,
-									(e) =>
-										(root.collectLabel && !Array.isArray(root.collectLabel) && e?.key === root.collectLabel.key) ||
-										false
-								)
-								if (sameKeyCom && sameKeyCom.tempKey) {
-									tempKeys.value[sameKeyCom.tempKey] = valGroup.value[root.collectLabel.key]
 								}
 							}
 						}
@@ -1217,7 +1218,7 @@
 	function findTempKeyItem(d: FormItem[], k: string) {
 		for (let root of d) {
 			if (root.key === k) {
-				return root.tempKey
+				return root
 			}
 		}
 		return false
@@ -1561,7 +1562,7 @@
 				for (let l of root.collectLabel) {
 					d[l.key] = valGroup.value[l.key]
 				}
-			} else if (root.collectLabel && root.collectLabel.key) {
+			} else if (root.collectLabel?.key) {
 				d[root.collectLabel.key] = valGroup.value[root.collectLabel.key]
 			}
 			emit('on-item-change', d)

@@ -152,11 +152,36 @@
 			optionUrl: 'testData/formR/people.json',
 			optionLabel: 'name',
 			optionVal: 'tel',
+			collectLabel: {
+				valKey: 'recommendReply',
+				key: 'recommendReply'
+			},
 			show: {
 				key: 'recommend',
 				val: [true]
 			},
 			info: 'radioGroup asyncOption, 内部推荐为“是”时展示该项'
+		},
+		{
+			type: 'radioGroup',
+			label: '推荐回执',
+			key: 'recommendReply',
+			booleanVal: true /*输出值会是布尔类型*/,
+			options: [
+				{
+					label: '是',
+					val: 1
+				},
+				{
+					label: '否',
+					val: 0
+				}
+			],
+			show: {
+				key: 'recommend',
+				val: [true]
+			},
+			info: '默认值为“推荐人”选中项带出，带出时“推荐人”选项recommendReply字段的boolean自动转换为“推荐回执”组件的number'
 		},
 		{
 			type: 'inputNumber' /*数字输入框，输出值是数字*/,
