@@ -10,6 +10,7 @@
 	import EditorPro from '../EditorPro/EditorPro.vue'
 	import InputMap from '../InputMap/InputMap.vue'
 	import MonthRange from '../MonthRange/MonthRange.vue'
+	import Date from '../Date/Date.vue'
 
 	const emit = defineEmits([
 		'item-change',
@@ -304,18 +305,16 @@
 			@on-file-id-change="reValidateAndChangeHandle($event, props.item)"
 		/>
 		<!--日期选择器-->
-		<DatePicker
+		<Date
 			:style="itemStyle"
 			v-else-if="props.item.type === 'date'"
 			v-model="tempKeys[props.item.tempKey]"
 			:type="props.item.dateType"
 			:disabled="Boolean(props.item.disabled) || props.disabled"
-			placement="bottom-end"
 			:placeholder="props.item.placeholder || t('r.selectDate')"
-			:options="props.item.dateOptions || null"
+			:options="props.item.dateOptions || {}"
+			:time-picker-options="item.timePickerOptions || {}"
 			:clearable="props.item.clearable !== false"
-			:editable="false"
-			transfer
 			@on-change="itemChange($event, props.item)"
 		/>
 		<!--时间选择器-->

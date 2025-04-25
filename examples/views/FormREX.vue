@@ -441,15 +441,24 @@
 			type: 'date',
 			dateType: 'daterange',
 			addTime: true,
-			label: '学历攻读时间',
+			label: '入职时间',
 			key: 'timeEnter',
 			key2: 'timeOut',
 			dateOptions: {
-				disabledDate(date: any) {
-					return date && date.valueOf() < Date.now() - 86400000
+				/*可选日期不能小于当天，且区间不超过30天*/
+				disabledDate(date: any, from: any, selecting: boolean) {
+					/*date:当前日期格子时间，from:区间时第一个日期（先选的那个，不一定是小的那个），selecting:区间时是否在选择中（两个日期只选择了一个时）*/
+					if (from && selecting) {
+						return (
+							date.valueOf() < Date.now() - 1000 * 60 * 60 * 24 ||
+							date.valueOf() > from.valueOf() + 1000 * 60 * 60 * 24 * 30 ||
+							date.valueOf() < from.valueOf() - 1000 * 60 * 60 * 24 * 30
+						)
+					}
+					return date.valueOf() < Date.now() - 1000 * 60 * 60 * 24
 				}
 			},
-			info: 'date daterange, 该示例展示功能：日期区间选择'
+			info: 'date daterange, 该示例展示功能：日期区间选择，可选日期不能小于当天，且区间不超过30天'
 		},
 		{
 			type: 'time',
