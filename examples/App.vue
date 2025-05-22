@@ -3,6 +3,9 @@
 	import SideMenuE from './components/SideMenuE.vue'
 	import { useRouter } from 'vue-router'
 	import { useStore } from '@/stores/main'
+	import { useI18n } from 'vue-i18n'
+
+	const { t } = useI18n()
 
 	const store = useStore()
 	const router = useRouter()
@@ -25,7 +28,7 @@
 		<Hello />
 
 		<SetLang class="fr" />
-		<span class="fr">{{ $t('e.testTxt') }}</span>
+		<span class="fr">{{ t('e.testTxt') }}</span>
 	</header>
 	<main class="appMain" :class="{ fullHeight: store.fullScreen }">
 		<SideMenuE class="notShrink" :data="menu" v-show="!store.fullScreen" />

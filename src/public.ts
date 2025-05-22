@@ -1,7 +1,7 @@
-import type { SlateDescendant } from '@wangeditor/editor'
+// import type { SlateDescendant } from '@wangeditor/editor'
 import type { VNode, Ref } from 'vue'
 
-declare module '@wangeditor/editor' {
+/*declare module '@wangeditor/editor' {
 	// 扩展 Text
 	interface SlateText {
 		text: string
@@ -12,7 +12,7 @@ declare module '@wangeditor/editor' {
 		type: string
 		children: SlateDescendant[]
 	}
-}
+}*/
 
 declare module 'vue' {
 	interface ComponentCustomProperties {

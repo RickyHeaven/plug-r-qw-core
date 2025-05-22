@@ -140,7 +140,7 @@
 	 */
 	function submitItems(d: FormItem[], t: string[]) {
 		for (let root of d) {
-			if (root.showing === true && root.key && root.type !== 'selectInput') {
+			if (root?.showing === true && root.key && root.type !== 'selectInput') {
 				t.push(root.key)
 				if (root.key2) {
 					t.push(root.key2)
@@ -167,7 +167,7 @@
 	 */
 	function showingItems(d: FormItem[], t: string[]) {
 		for (let root of d) {
-			if (root.showing === true && root.key && root.type !== 'selectInput') {
+			if (root?.showing === true && root.key && root.type !== 'selectInput') {
 				t.push(root.key)
 			}
 		}
@@ -375,7 +375,7 @@
 	 * @param {boolean} val 是否展示的结果
 	 */
 	function returnIfVal(root: FormItem, val: boolean) {
-		if (!root.showing && val && root.key) {
+		if (!root?.showing && val && root?.key) {
 			root.showing = val
 
 			if (root.defaultVal !== undefined) {
@@ -417,61 +417,63 @@
 	 * @param a 储存默认值的容器
 	 */
 	function getTempKeyDefaultVal(root: FormItem, a: Record<string, any>) {
-		switch (root.type) {
-			case 'selectInput':
-				a[root.tempKey] = {
-					key: root.key,
-					val: root.defaultVal
-				}
-				break
-			case 'inputMap':
-				if (root.key3) {
+		if (root?.type) {
+			switch (root.type) {
+				case 'selectInput':
 					a[root.tempKey] = {
-						lng: root.defaultVal || 0,
-						lat: root.defaultVal2 || 0,
-						name: root.defaultVal3 || ''
+						key: root.key,
+						val: root.defaultVal
 					}
-				} else {
-					a[root.tempKey] = {
-						lng: root.defaultVal || 0,
-						lat: root.defaultVal2 || 0
+					break
+				case 'inputMap':
+					if (root.key3) {
+						a[root.tempKey] = {
+							lng: root.defaultVal || 0,
+							lat: root.defaultVal2 || 0,
+							name: root.defaultVal3 || ''
+						}
+					} else {
+						a[root.tempKey] = {
+							lng: root.defaultVal || 0,
+							lat: root.defaultVal2 || 0
+						}
 					}
-				}
-				break
-			case 'input':
-			case 'inputNumber':
-			case 'textarea':
-				a[root.tempKey] = root.defaultVal
-				break
-			case 'radioGroup':
-			case 'select':
-			case 'checkboxGroup':
-				if (root.booleanVal) {
-					a[root.tempKey] = Boolean(root.defaultVal) ? 1 : 0
-				} else {
+					break
+				case 'input':
+				case 'inputNumber':
+				case 'textarea':
 					a[root.tempKey] = root.defaultVal
-				}
-				break
-			case 'date':
-			case 'time':
-			case 'monthRange':
-				if (
-					root.dateType === 'date' ||
-					root.dateType === 'datetime' ||
-					root.dateType === 'time' ||
-					root.dateType === 'year' ||
-					root.dateType === 'month'
-				) {
-					a[root.tempKey] = root.defaultVal
-				} else if (
-					root.dateType === 'daterange' ||
-					root.dateType === 'datetimerange' ||
-					root.dateType === 'timerange' ||
-					root.type === 'monthRange'
-				) {
-					a[root.tempKey] = (root.defaultVal && root.defaultVal2 && [root.defaultVal, root.defaultVal2]) || []
-				}
-				break
+					break
+				case 'radioGroup':
+				case 'select':
+				case 'checkboxGroup':
+					if (root.booleanVal) {
+						a[root.tempKey] = Boolean(root.defaultVal) ? 1 : 0
+					} else {
+						a[root.tempKey] = root.defaultVal
+					}
+					break
+				case 'date':
+				case 'time':
+				case 'monthRange':
+					if (
+						root.dateType === 'date' ||
+						root.dateType === 'datetime' ||
+						root.dateType === 'time' ||
+						root.dateType === 'year' ||
+						root.dateType === 'month'
+					) {
+						a[root.tempKey] = root.defaultVal
+					} else if (
+						root.dateType === 'daterange' ||
+						root.dateType === 'datetimerange' ||
+						root.dateType === 'timerange' ||
+						root.type === 'monthRange'
+					) {
+						a[root.tempKey] = (root.defaultVal && root.defaultVal2 && [root.defaultVal, root.defaultVal2]) || []
+					}
+					break
+			}
 		}
 	}
 
@@ -490,136 +492,221 @@
 
 	function initItems(d: FormItem[]) {
 		for (let root of d) {
-			switch (root.type) {
-				case 'selectInput':
-					const tempKeyF = 'selectInput' + Math.floor(Math.random() * 100000000)
-					root.tempKey = tempKeyF
-					tempKeys.value[tempKeyF] = ref<Record<string, any>>({
-						key: root.key || null,
-						val: root.defaultVal || null
-					})
-					watchGroup.push(
-						watch(
-							() => tempKeys.value[tempKeyF],
-							(after) => {
-								tempKeysWatchHandle(after, root)
-							},
-							{ immediate: true }
+			if (root?.type) {
+				switch (root.type) {
+					case 'selectInput':
+						const tempKeyF = 'selectInput' + Math.floor(Math.random() * 100000000)
+						root.tempKey = tempKeyF
+						tempKeys.value[tempKeyF] = ref<Record<string, any>>({
+							key: root.key || null,
+							val: root.defaultVal || null
+						})
+						watchGroup.push(
+							watch(
+								() => tempKeys.value[tempKeyF],
+								(after) => {
+									tempKeysWatchHandle(after, root)
+								},
+								{ immediate: true }
+							)
 						)
-					)
-					break
-				case 'inputMap':
-					const tempKeyE = 'inputMap' + Math.floor(Math.random() * 100000000)
-					if (root.key) {
-						root.tempKey = tempKeyE
-						if (root.key3) {
-							tempKeys.value[tempKeyE] =
-								root.defaultVal !== undefined && root.defaultVal2 !== undefined
-									? {
-											lng: root.defaultVal,
-											lat: root.defaultVal2,
-											name: root.defaultVal3 || ''
-										}
-									: {
-											lng: null,
-											lat: null,
-											name: null
-										}
-						} else {
-							tempKeys.value[tempKeyE] =
-								root.defaultVal !== undefined && root.defaultVal2 !== undefined
-									? {
-											lng: root.defaultVal,
-											lat: root.defaultVal2
-										}
-									: {
-											lng: null,
-											lat: null
-										}
+						break
+					case 'inputMap':
+						const tempKeyE = 'inputMap' + Math.floor(Math.random() * 100000000)
+						if (root.key) {
+							root.tempKey = tempKeyE
+							if (root.key3) {
+								tempKeys.value[tempKeyE] =
+									root.defaultVal !== undefined && root.defaultVal2 !== undefined
+										? {
+												lng: root.defaultVal,
+												lat: root.defaultVal2,
+												name: root.defaultVal3 || ''
+											}
+										: {
+												lng: null,
+												lat: null,
+												name: null
+											}
+							} else {
+								tempKeys.value[tempKeyE] =
+									root.defaultVal !== undefined && root.defaultVal2 !== undefined
+										? {
+												lng: root.defaultVal,
+												lat: root.defaultVal2
+											}
+										: {
+												lng: null,
+												lat: null
+											}
+							}
+							watchGroup.push(
+								watch(
+									() => tempKeys.value[tempKeyE],
+									(after) => {
+										tempKeysWatchHandle(after, root)
+									},
+									{ immediate: true }
+								)
+							)
 						}
-						watchGroup.push(
-							watch(
-								() => tempKeys.value[tempKeyE],
-								(after) => {
-									tempKeysWatchHandle(after, root)
-								},
-								{ immediate: true }
+						break
+					case 'input':
+					case 'inputNumber':
+					case 'textarea':
+						const tempKeyD = 'inputT' + Math.floor(Math.random() * 100000000)
+						if (root.key) {
+							root.tempKey = tempKeyD
+							tempKeys.value[tempKeyD] = root.defaultVal !== undefined ? root.defaultVal : null
+							watchGroup.push(
+								watch(
+									() => tempKeys.value[tempKeyD],
+									(after) => {
+										tempKeysWatchHandle(after, root)
+									},
+									{ immediate: true }
+								)
 							)
-						)
-					}
-					break
-				case 'input':
-				case 'inputNumber':
-				case 'textarea':
-					const tempKeyD = 'inputT' + Math.floor(Math.random() * 100000000)
-					if (root.key) {
-						root.tempKey = tempKeyD
-						tempKeys.value[tempKeyD] = root.defaultVal !== undefined ? root.defaultVal : null
-						watchGroup.push(
-							watch(
-								() => tempKeys.value[tempKeyD],
-								(after) => {
-									tempKeysWatchHandle(after, root)
-								},
-								{ immediate: true }
-							)
-						)
-					}
-					break
-				case 'select':
-				case 'radioGroup':
-				case 'checkboxGroup':
-					if (!root.options) {
-						root.options = []
-					}
-					/*为checkboxGroup和radioGroup的options做响应式，因为它们和select不同，选项一开始就是展示出来的，大多数时候不会有机会主动重新渲染*/
-					if (root.type === 'checkboxGroup' || root.type === 'radioGroup') {
-						root.options = ref(cloneDeep(root.options))
-					}
-					if (root.asyncOption) {
-						/*远程待选项*/
-						if (root.changeOption) {
-							/*待选项会根据条件改变*/
-							if (Array.isArray(root.changeOption)) {
-								let go = true
-								for (let cp of root.changeOption) {
-									/*检验changeOption参数是否可用*/
-									if (!cp.valKey || !cp.key) {
-										go = false
-										break
+						}
+						break
+					case 'select':
+					case 'radioGroup':
+					case 'checkboxGroup':
+						if (!root.options) {
+							root.options = []
+						}
+						/*为checkboxGroup和radioGroup的options做响应式，因为它们和select不同，选项一开始就是展示出来的，大多数时候不会有机会主动重新渲染*/
+						if (root.type === 'checkboxGroup' || root.type === 'radioGroup') {
+							root.options = ref(cloneDeep(root.options))
+						}
+						if (root.asyncOption) {
+							/*远程待选项*/
+							if (root.changeOption) {
+								/*待选项会根据条件改变*/
+								if (Array.isArray(root.changeOption)) {
+									let go = true
+									for (let cp of root.changeOption) {
+										/*检验changeOption参数是否可用*/
+										if (!cp.valKey || !cp.key) {
+											go = false
+											break
+										}
 									}
-								}
-								if (go) {
+									if (go) {
+										watchGroup.push(
+											watch(
+												() => {
+													let tUrl = ''
+													if (Array.isArray(root.changeOption)) {
+														for (let cp of root.changeOption) {
+															let vT = valGroup.value[cp.valKey]
+															if (
+																(vT && !Array.isArray(vT)) ||
+																(Array.isArray(vT) && vT.length) ||
+																vT === 0 ||
+																vT === false
+															) {
+																/*如果条件有有效值，则拉取待选项*/
+																tUrl += '&' + cp.key + '=' + vT
+															} else if (!cp.notRequired) {
+																/*条件为必填（notRequired!==true,默认必填），且没有有效值，则不拉取待选项*/
+																return false
+															}
+														}
+													}
+													return tUrl
+												},
+												(after) => {
+													let tV = cloneDeep(tempKeys.value[root.tempKey])
+													tempKeys.value[root.tempKey] = null
+
+													if (after && root.optionUrl) {
+														let urlT = root.optionUrl.indexOf('?') !== -1 ? root.optionUrl : root.optionUrl + '?'
+														initOption((urlT + after).replace(/\?&/, '?'), root, tV)
+													} else {
+														if (root.localOption) {
+															setValue(root, 'options', [...root.localOption])
+														} else {
+															setValue(root, 'options', [])
+														}
+
+														if (isValidValue(tV)) {
+															recoverVal(tV, root)
+														}
+													}
+												},
+												{
+													immediate: true
+												}
+											)
+										)
+									} else {
+										if (root.localOption) {
+											setValue(root, 'options', [...root.localOption])
+										} else {
+											setValue(root, 'options', [])
+										}
+									}
+								} else if (typeof root.changeOption === 'object') {
+									if (root.changeOption.valKey && root.changeOption.key) {
+										watchGroup.push(
+											watch(
+												() => {
+													if (typeof root.changeOption === 'object' && !Array.isArray(root.changeOption)) {
+														return valGroup.value[root.changeOption.valKey]
+													}
+													return false
+												},
+												(after) => {
+													let tV = cloneDeep(tempKeys.value[root.tempKey])
+													tempKeys.value[root.tempKey] = null
+
+													if (
+														((after && !Array.isArray(after)) ||
+															(Array.isArray(after) && after.length) ||
+															after === 0 ||
+															after === false) &&
+														root.optionUrl &&
+														typeof root.changeOption === 'object' &&
+														!Array.isArray(root.changeOption)
+													) {
+														let urlT = root.optionUrl.indexOf('?') !== -1 ? root.optionUrl : root.optionUrl + '?'
+														initOption((urlT + '&' + root.changeOption.key + '=' + after).replace(/\?&/, '?'), root, tV)
+													} else {
+														if (root.localOption) {
+															setValue(root, 'options', [...root.localOption])
+														} else {
+															setValue(root, 'options', [])
+														}
+														if (isValidValue(tV)) {
+															recoverVal(tV, root)
+														}
+													}
+												},
+												{ immediate: true }
+											)
+										)
+									}
+								} else if (myTypeof(root.changeOption) === 'Boolean') {
+									/*设置changeOption为true时,当待选项地址改变后重新拉取待选项，在使用该表单组件的地方改变传入的formData对应项的optionUrl*/
 									watchGroup.push(
 										watch(
 											() => {
-												let tUrl = ''
-												if (Array.isArray(root.changeOption)) {
-													for (let cp of root.changeOption) {
-														let vT = valGroup.value[cp.valKey]
-														if (vT || vT === 0 || vT === false) {
-															/*如果条件有有效值，则拉取待选项*/
-															tUrl += '&' + cp.key + '=' + vT
-														} else if (!cp.notRequired) {
-															/*条件为必填（notRequired!==true,默认必填），且没有有效值，则不拉取待选项*/
-															return false
-														}
-													}
-												}
-												return tUrl
+												const t = findCollection(props.formData, (e) => e?.key === root.key)
+												t.optionUrl = toRef(t.optionUrl)
+												return t.optionUrl.value
 											},
 											(after) => {
 												let tV = cloneDeep(tempKeys.value[root.tempKey])
 												tempKeys.value[root.tempKey] = null
 
-												if (after && root.optionUrl) {
-													let urlT = root.optionUrl.indexOf('?') !== -1 ? root.optionUrl : root.optionUrl + '?'
-													initOption((urlT + after).replace(/\?&/, '?'), root, tV)
+												if (after) {
+													initOption(after, root, tV)
 												} else {
 													if (root.localOption) {
-														setValue(root.options, [...root.localOption])
+														setValue(root, 'options', [...root.localOption])
 													} else {
-														setValue(root.options, [])
+														setValue(root, 'options', [])
 													}
 
 													if (isValidValue(tV)) {
@@ -632,148 +719,73 @@
 											}
 										)
 									)
-								} else {
-									if (root.localOption) {
-										setValue(root.options, [...root.localOption])
-									} else {
-										setValue(root.options, [])
-									}
 								}
-							} else if (typeof root.changeOption === 'object') {
-								if (root.changeOption.valKey && root.changeOption.key) {
-									watchGroup.push(
-										watch(
-											() => {
-												if (typeof root.changeOption === 'object' && !Array.isArray(root.changeOption)) {
-													return valGroup.value[root.changeOption.valKey]
-												}
-												return false
-											},
-											(after) => {
-												let tV = cloneDeep(tempKeys.value[root.tempKey])
-												tempKeys.value[root.tempKey] = null
-
-												if (
-													(after || after === 0 || after === false) &&
-													root.optionUrl &&
-													typeof root.changeOption === 'object' &&
-													!Array.isArray(root.changeOption)
-												) {
-													let urlT = root.optionUrl.indexOf('?') !== -1 ? root.optionUrl : root.optionUrl + '?'
-													initOption((urlT + '&' + root.changeOption.key + '=' + after).replace(/\?&/, '?'), root, tV)
-												} else {
-													if (root.localOption) {
-														setValue(root.options, [...root.localOption])
-													} else {
-														setValue(root.options, [])
-													}
-													if (isValidValue(tV)) {
-														recoverVal(tV, root)
-													}
-												}
-											},
-											{ immediate: true }
-										)
-									)
-								}
-							} else if (myTypeof(root.changeOption) === 'Boolean') {
-								/*设置changeOption为true时,当待选项地址改变后重新拉取待选项，在使用该表单组件的地方改变传入的formData对应项的optionUrl*/
-								watchGroup.push(
-									watch(
-										() => {
-											const t = findCollection(props.formData, (e) => e?.key === root.key)
-											t.optionUrl = toRef(t.optionUrl)
-											return t.optionUrl.value
-										},
-										(after) => {
-											let tV = cloneDeep(tempKeys.value[root.tempKey])
-											tempKeys.value[root.tempKey] = null
-
-											if (after) {
-												initOption(after, root, tV)
-											} else {
-												if (root.localOption) {
-													setValue(root.options, [...root.localOption])
-												} else {
-													setValue(root.options, [])
-												}
-
-												if (isValidValue(tV)) {
-													recoverVal(tV, root)
-												}
-											}
-										},
-										{
-											immediate: true
-										}
-									)
-								)
+							} else if (root.optionUrl) {
+								initOption(root.optionUrl, root)
 							}
-						} else if (root.optionUrl) {
-							initOption(root.optionUrl, root)
-						}
-					} else if (myTypeof(root.borrowOption) === 'String') {
-						/*借用待选项*/
-						nextTick(function () {
-							root.options = findCollection(formDataT.value, (e) => e?.key === root.borrowOption).options
-						})
-					}
-
-					const tempKeyC = 'opEle' + Math.floor(Math.random() * 100000000)
-					if (root.key) {
-						root.tempKey = tempKeyC
-						if ((root.type === 'select' && root.multiple) || root.type === 'checkboxGroup') {
-							tempKeys.value[tempKeyC] = root.defaultVal !== undefined ? root.defaultVal : []
-						} else if (root.booleanVal) {
-							tempKeys.value[tempKeyC] = root.defaultVal !== undefined ? (Boolean(root.defaultVal) ? 1 : 0) : null
-						} else {
-							tempKeys.value[tempKeyC] = root.defaultVal !== undefined ? root.defaultVal : null
+						} else if (myTypeof(root.borrowOption) === 'String') {
+							/*借用待选项*/
+							nextTick(function () {
+								root.options = findCollection(formDataT.value, (e) => e?.key === root.borrowOption).options
+							})
 						}
 
+						const tempKeyC = 'opEle' + Math.floor(Math.random() * 100000000)
+						if (root.key) {
+							root.tempKey = tempKeyC
+							if ((root.type === 'select' && root.multiple) || root.type === 'checkboxGroup') {
+								tempKeys.value[tempKeyC] = root.defaultVal !== undefined ? root.defaultVal : []
+							} else if (root.booleanVal) {
+								tempKeys.value[tempKeyC] = root.defaultVal !== undefined ? (Boolean(root.defaultVal) ? 1 : 0) : null
+							} else {
+								tempKeys.value[tempKeyC] = root.defaultVal !== undefined ? root.defaultVal : null
+							}
+
+							watchGroup.push(
+								watch(
+									() => tempKeys.value[tempKeyC],
+									(after) => {
+										tempKeysWatchHandle(after, root)
+									},
+									{
+										immediate: true
+									}
+								)
+							)
+						}
+						break
+					case 'date':
+					case 'time':
+					case 'monthRange':
+						const tempKeyB = 'date' + Math.floor(Math.random() * 100000000)
+						root.tempKey = tempKeyB
+						if (
+							root.dateType === 'date' ||
+							root.dateType === 'datetime' ||
+							root.dateType === 'time' ||
+							root.dateType === 'year' ||
+							root.dateType === 'month'
+						) {
+							tempKeys.value[tempKeyB] = root.defaultVal || null
+						} else if (
+							root.dateType === 'daterange' ||
+							root.dateType === 'datetimerange' ||
+							root.dateType === 'timerange' ||
+							root.type === 'monthRange'
+						) {
+							tempKeys.value[tempKeyB] =
+								(root.defaultVal && root.defaultVal2 && [root.defaultVal, root.defaultVal2]) || []
+						}
 						watchGroup.push(
 							watch(
-								() => tempKeys.value[tempKeyC],
+								() => tempKeys.value[tempKeyB],
 								(after) => {
 									tempKeysWatchHandle(after, root)
-								},
-								{
-									immediate: true
 								}
 							)
 						)
-					}
-					break
-				case 'date':
-				case 'time':
-				case 'monthRange':
-					const tempKeyB = 'date' + Math.floor(Math.random() * 100000000)
-					root.tempKey = tempKeyB
-					if (
-						root.dateType === 'date' ||
-						root.dateType === 'datetime' ||
-						root.dateType === 'time' ||
-						root.dateType === 'year' ||
-						root.dateType === 'month'
-					) {
-						tempKeys.value[tempKeyB] = root.defaultVal || null
-					} else if (
-						root.dateType === 'daterange' ||
-						root.dateType === 'datetimerange' ||
-						root.dateType === 'timerange' ||
-						root.type === 'monthRange'
-					) {
-						tempKeys.value[tempKeyB] =
-							(root.defaultVal && root.defaultVal2 && [root.defaultVal, root.defaultVal2]) || []
-					}
-					watchGroup.push(
-						watch(
-							() => tempKeys.value[tempKeyB],
-							(after) => {
-								tempKeysWatchHandle(after, root)
-							}
-						)
-					)
-					break
+						break
+				}
 			}
 		}
 	}
@@ -975,7 +987,7 @@
 	 */
 	function initValItems(d: FormItem[]) {
 		for (let root of d) {
-			if (root.key) {
+			if (root?.key) {
 				if (root.type === 'checkboxGroup' || (root.type === 'select' && root.multiple)) {
 					valGroup.value[root.key] = root.defaultVal !== undefined && root.show === undefined ? root.defaultVal : []
 				} else if (root.type === 'editor' || root.type === 'editorPro') {
@@ -993,7 +1005,7 @@
 
 	/*将缓存表单值给统计对象（私有）*/
 	function tempKeysWatchHandle(after: any, root: FormItem) {
-		if (root.showing) {
+		if (root?.showing) {
 			switch (root.type) {
 				case 'selectInput':
 					if (after) {
@@ -1174,11 +1186,11 @@
 
 	/*collectLabel时找出选中的选项（私有）*/
 	function findOptions(root: FormItem, after: any) {
-		const o = toValue(root.options)
+		const o = toValue(root?.options)
 		if (!o) {
 			return
 		}
-		if (root?.multiple || root.type === 'checkboxGroup') {
+		if (root?.multiple || root?.type === 'checkboxGroup') {
 			if (after) {
 				let t: any[] = []
 				for (let e of o) {
@@ -1338,7 +1350,7 @@
 	 */
 	function updateTempKeyItem(a: FormItem[], d: Record<string, any>, notClearOthers: boolean = false) {
 		for (let root of a) {
-			if (!root.key) {
+			if (!root?.key) {
 				continue
 			}
 			if (

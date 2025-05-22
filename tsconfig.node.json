@@ -1,20 +1,22 @@
 {
-  "extends": "@tsconfig/node20/tsconfig.json",
+  "extends": "@tsconfig/node22/tsconfig.json",
   "include": [
     "vite.config.*",
     "vitest.config.*",
     "cypress.config.*",
     "nightwatch.conf.*",
-    "playwright.config.*"
+    "playwright.config.*",
+    "eslint.config.*"
   ],
   "compilerOptions": {
     "noEmit": true,
-
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",
     "target": "ESNext",
     "module": "ESNext",
     "moduleResolution": "Bundler",
     "types": [
-      "node"
+      "node",
+      "vite/client"
     ],
     "resolveJsonModule": true
   }

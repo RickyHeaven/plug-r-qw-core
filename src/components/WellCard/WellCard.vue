@@ -22,16 +22,11 @@
 
 	const wellStyle = computed(() => {
 		let temp: Record<string, any> = {
-			width: props.fitToContent ? 'fit-content' : props.width,
-			height: props.fitToContent ? 'fit-content' : props.height
+			width: props.fitToContent ? 'fit-content' : props.width + 'px',
+			height: props.fitToContent ? 'fit-content' : props.height + 'px'
 		}
 		if (props.inline) {
 			temp.display = 'inline-block'
-		}
-		for (let k in temp) {
-			if (temp.hasOwnProperty(k) && typeof temp[k] === 'number' && temp[k] > 0) {
-				temp[k] += 'px'
-			}
 		}
 		return temp
 	})

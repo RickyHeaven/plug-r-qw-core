@@ -39,7 +39,6 @@ window._AMapSecurityConfig = {
 
 const i18n = createI18n({
 	allowComposition: true,
-	globalInjection: true,
 	legacy: false,
 	locale: localStorage.getItem('locale') || 'zh',
 	messages: {

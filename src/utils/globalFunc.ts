@@ -12,11 +12,11 @@ import TableTooltip from '../components/TableTooltip/TableTooltip.vue'
 
 export const isClient = typeof window !== 'undefined'
 
-export function setValue(target: any, value: any) {
-	if (isRef(target)) {
-		target.value = value
+export function setValue(target: any, key: string, value: any) {
+	if (isRef(target[key])) {
+		target[key].value = value
 	} else {
-		target = value
+		target[key] = value
 	}
 }
 
