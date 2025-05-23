@@ -1596,7 +1596,7 @@ declare function setItemToValGroup_4(data: Record<string, any>, notClearOthers: 
  * @param {number|boolean} setCurrentRow 1.数字，行在表数据中的index；2.布尔值，更新当前行
  * @param {boolean} clickCurrentRow 更新完数据点击更新的行
  */
-declare function setRowData(row: Record<string, any>, setCurrentRow: boolean, clickCurrentRow: boolean): void;
+declare function setRowData(row: Record<string, any>, setCurrentRow: boolean | number, clickCurrentRow: boolean): void;
 
 declare const setTimeout_2: (fn: () => void, time: number) => number;
 export { setTimeout_2 as setTimeout }

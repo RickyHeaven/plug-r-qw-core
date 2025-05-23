@@ -187,7 +187,7 @@
 							td = params.row[e.key]
 						}
 						if (props.tableEmptyTdHandle) {
-							return h('span', td === '' ? '--' : (td ?? '--'))
+							return h('span', td === '' ? '--' : td ?? '--')
 						}
 						return h('span', td)
 					}
@@ -261,7 +261,7 @@
 	 * @param {number|boolean} setCurrentRow 1.数字，行在表数据中的index；2.布尔值，更新当前行
 	 * @param {boolean} clickCurrentRow 更新完数据点击更新的行
 	 */
-	function setRowData(row: Record<string, any>, setCurrentRow: boolean, clickCurrentRow: boolean) {
+	function setRowData(row: Record<string, any>, setCurrentRow: boolean | number, clickCurrentRow: boolean) {
 		let index: number | null = null
 		if (setCurrentRow) {
 			index = currentIndex
