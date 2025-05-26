@@ -263,10 +263,10 @@
 	 */
 	function setRowData(row: Record<string, any>, setCurrentRow: boolean | number, clickCurrentRow: boolean) {
 		let index: number | null = null
-		if (setCurrentRow) {
-			index = currentIndex
-		} else if (typeof setCurrentRow === 'number') {
+		if (typeof setCurrentRow === 'number') {
 			index = setCurrentRow
+		} else if (setCurrentRow) {
+			index = currentIndex
 		}
 		if (index !== null) {
 			let t = dataT.value[index]
@@ -546,7 +546,7 @@
 			</div>
 		</div>
 		<div class="pageContainer" v-show="!props.noPage">
-			<PagePro
+			<page-pro
 				v-if="props.usePagePro"
 				v-model="current"
 				:total="total"
