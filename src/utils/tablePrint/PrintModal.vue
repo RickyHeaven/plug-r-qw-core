@@ -14,6 +14,7 @@
 	const disabled = ref(false)
 	const domPrint = ref(false)
 	const autoPrint = ref(false)
+	const autoPrintTimeout = ref(100)
 	const width = ref(715)
 	const help = ref(false)
 	const isFrom = ref()
@@ -81,6 +82,7 @@
 				customClass.value = _d?.config?.customClass || ''
 				domPrint.value = _d?.config?.domPrint || false
 				autoPrint.value = _d?.config?.autoPrint || false
+				autoPrintTimeout.value = _d?.config?.autoPrintTimeout || 100
 				width.value = _d?.config?.width || 715
 				document.title = (title.value || t('r.print')) + '_' + new Date().toLocaleString()
 			} else {
@@ -94,7 +96,7 @@
 			let tc = window.setTimeout(() => {
 				window.clearTimeout(tc)
 				print()
-			}, 100)
+			}, autoPrintTimeout.value)
 		}
 		document.addEventListener('click', wallClick)
 		document.addEventListener('mousemove', handleDrag)
