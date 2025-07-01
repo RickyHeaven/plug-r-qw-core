@@ -1476,7 +1476,11 @@ declare type PredicateFunc = (d: any) => boolean;
  * @param {Array} columns Table的列设置，同view-design
  * @param {Array|String} data Table的数据
  * @param {String} title 标题(如打印为PDF将是默认文件名)
- * @param {Object} config 打印设置，目前支持：1.customClass,用于定制打印页面样式；2.autoPrint,是否直接打印；3.autoPrintTimeout,直接打印延时（给网页内容加载时间），默认：100ms
+ * @param {Object} config 打印设置，目前支持：
+ * 1.customClass,用于定制打印页面样式；
+ * 2.autoPrint,是否直接打印；
+ * 3.autoPrintTimeout,直接打印延时（给网页内容加载时间），默认：100ms
+ * 4.spanMethod,用于打印表格时传递表格‘行合并’或‘列合并’回调函数，回调函数使用方法见view-design的Table的span-method属性，或是参考本库示例btTablePageEX中打印功能示例
  */
 declare function print_2(columns: any[], data: any[] | string, title?: string, config?: Record<string, any>): void;
 

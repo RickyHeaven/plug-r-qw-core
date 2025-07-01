@@ -15,6 +15,7 @@
 	const domPrint = ref(false)
 	const autoPrint = ref(false)
 	const autoPrintTimeout = ref(100)
+	const spanMethod = ref()
 	const width = ref(715)
 	const help = ref(false)
 	const isFrom = ref()
@@ -66,6 +67,12 @@
 		}, 100)
 	}
 
+	const spanMethodHandler = (d: Record<string, any>) => {
+		if (typeof spanMethod.value === 'function') {
+			return spanMethod.value(d)
+		}
+	}
+
 	const init = () => {
 		isFrom.value = route?.params?.isFrom
 		if (isFrom.value) {
@@ -79,12 +86,20 @@
 				columns.value = _d.columns
 				tableData.value = _d.data
 				title.value = _d.title
-				customClass.value = _d?.config?.customClass || ''
-				domPrint.value = _d?.config?.domPrint || false
-				autoPrint.value = _d?.config?.autoPrint || false
-				autoPrintTimeout.value = _d?.config?.autoPrintTimeout || 100
-				width.value = _d?.config?.width || 715
+				customClass.value = _d.config?.customClass || ''
+				domPrint.value = _d.config?.domPrint || false
+				autoPrint.value = _d.config?.autoPrint || false
+				autoPrintTimeout.value = _d.config?.autoPrintTimeout || 100
+				width.value = _d.config?.width || 715
 				document.title = (title.value || t('r.print')) + '_' + new Date().toLocaleString()
+				if (_d.funcArr?.length) {
+					for (let e of _d.funcArr) {
+						if (e.name === 'spanMethod') {
+							spanMethod.value = new Function('return ' + e.func)()
+							break
+						}
+					}
+				}
 			} else {
 				disabled.value = true
 			}
@@ -155,6 +170,14 @@
 			<div class="settingLine" @mousedown.stop="dragStart"></div>
 		</div>
 		<div v-if="domPrint" class="domPrintContent" v-html="tableData" :style="domContainerStyle"></div>
-		<Table v-if="!domPrint" class="tablePW" :columns="columns" :data="tableData" border v-show="!disabled" />
+		<Table
+			v-if="!domPrint"
+			class="tablePW"
+			:columns="columns"
+			:data="tableData"
+			:span-method="spanMethodHandler"
+			border
+			v-show="!disabled"
+		/>
 	</div>
 </template>

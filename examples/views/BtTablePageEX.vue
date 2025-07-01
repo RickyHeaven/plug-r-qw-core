@@ -239,7 +239,16 @@
 	}
 
 	function handlePrint() {
-		tablePrint.print(columns, tabData, '表格打印示例', { autoPrint: true })
+		tablePrint.print(columns, tabData, '表格打印示例', {
+			autoPrint: true,
+			spanMethod: ({ rowIndex, columnIndex }: Record<string, any>) => {
+				if (columnIndex === 2 && rowIndex === 0) {
+					return [2, 1]
+				} else if (columnIndex === 2 && rowIndex === 1) {
+					return [0, 0]
+				}
+			}
+		})
 	}
 
 	function messageRender(_h: any) {
