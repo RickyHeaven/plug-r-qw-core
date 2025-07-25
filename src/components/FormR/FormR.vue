@@ -58,7 +58,7 @@
 	let watchGroup: any[] = []
 	const mgrUrl = window?.g?.mgrURL ?? ''
 	/*selectInput的key没有写死在formData中（因为是动态的）,为了在showingKeys中能捕捉到这类组件的key,特声明此变量*/
-	let selectInputKeys: string[] = []
+	let selectInputKeys = ref<string[]>([])
 	let hiddenKeys: string[] = []
 	const showLoading = ref(false)
 	const formReRenderKey = ref<number>(Math.random() * 100000000 + 1000) /*刷新表单*/
@@ -114,7 +114,7 @@
 		} else {
 			submitItems(formDataT.value as FormItem[], t)
 		}
-		return t.concat(selectInputKeys, hiddenKeys)
+		return t.concat(selectInputKeys.value, hiddenKeys)
 	})
 	const showingKeys = computed<string[]>(() => {
 		let t: any[] = []
@@ -1515,11 +1515,11 @@
 	/*更新选择输入框值（私有）*/
 	function onSelectInputChange(d: any) {
 		if (d.beforeKey) {
-			remove(selectInputKeys, (o) => o === d.beforeKey)
+			remove(selectInputKeys.value, (o) => o === d.beforeKey)
 		}
 		if (d.key) {
-			if (selectInputKeys.indexOf(d.key) === -1) {
-				selectInputKeys.push(d.key)
+			if (selectInputKeys.value.indexOf(d.key) === -1) {
+				selectInputKeys.value.push(d.key)
 			}
 			itemChange({
 				e: null,
