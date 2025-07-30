@@ -348,12 +348,12 @@ close: typeof close_3;
 "onOn-cancel"?: ((...args: any[]) => any) | undefined;
 }>, {
 disabled: boolean;
+width: string;
 labelWidth: number;
 itemWidth: number;
 formData: Array<FormItem | FormItem[]>;
 contentWidth: string;
 btnLoading: boolean;
-with: string;
 showOkBt: boolean;
 showCancelBt: boolean;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>;
@@ -571,7 +571,7 @@ declare type __VLS_Props_21 = {
 
 declare type __VLS_Props_22 = {
     formData?: Array<FormItem | FormItem[]>;
-    with?: string;
+    width?: string;
     labelWidth?: number;
     contentWidth?: string;
     itemWidth?: number;

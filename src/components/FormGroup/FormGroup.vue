@@ -13,7 +13,7 @@
 	const props = withDefaults(
 		defineProps<{
 			formData?: Array<FormItem | FormItem[]>
-			with?: string
+			width?: string
 			labelWidth?: number
 			contentWidth?: string
 			itemWidth?: number
@@ -26,7 +26,7 @@
 		}>(),
 		{
 			formData: () => [],
-			with: () => Proxy().formGroupWidth,
+			width: () => Proxy().formGroupWidth,
 			labelWidth: () => Proxy().formGroupLabelWidth,
 			contentWidth: '70%',
 			itemWidth: 200,
@@ -37,7 +37,7 @@
 		}
 	)
 
-	const formGroupStyle = ref({ width: props.with })
+	const formGroupStyle = ref({ width: props.width })
 	const showLoading = ref(false)
 	const formRRef = ref()
 	const formDataC = computed(() => {
