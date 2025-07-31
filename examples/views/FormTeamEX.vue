@@ -224,6 +224,7 @@
 
 					> .ivu-form-item-content {
 						margin-left: 0 !important;
+						height: 32px;
 
 						> .inlineBlock {
 							width: 100% !important;

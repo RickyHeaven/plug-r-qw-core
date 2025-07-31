@@ -22,14 +22,24 @@
 
 	const wellStyle = computed(() => {
 		let temp: Record<string, any> = {
-			width: props.fitToContent ? 'fit-content' : props.width + 'px',
-			height: props.fitToContent ? 'fit-content' : props.height + 'px'
+			width: props.fitToContent ? 'fit-content' : dealStyle(props.width),
+			height: props.fitToContent ? 'fit-content' : dealStyle(props.height)
 		}
 		if (props.inline) {
 			temp.display = 'inline-block'
 		}
 		return temp
 	})
+
+	function dealStyle(d: any) {
+		const reg = /^\d+$/
+		if (typeof d === 'number') {
+			return d + 'px'
+		} else if (typeof d === 'string' && reg.test(d)) {
+			return d + 'px'
+		}
+		return d
+	}
 </script>
 
 <template>
