@@ -101,8 +101,8 @@
 	let selected: Record<string, any>[] = []
 	let currentKey: string | null
 	let currentIndex: number | null
-	let _key: string = props.orderKey
-	let _order: string = props.orderDefault
+	let _key = ref<string>(props.orderKey)
+	let _order = ref<string>(props.orderDefault)
 	const tableContainerHeight = 300
 
 	const columnsFixed = computed(() => {
@@ -124,9 +124,9 @@
 		}
 		if (props.sortable === 'custom') {
 			if (props.orderKeyFormat === 'underline') {
-				t[_order] = toLine(_key)
+				t[_order.value] = toLine(_key.value)
 			} else if (props.orderKeyFormat === 'camelcase') {
-				t[_order] = toHump(_key)
+				t[_order.value] = toHump(_key.value)
 			}
 		}
 		return t
@@ -223,14 +223,14 @@
 	watch(
 		() => props.orderDefault,
 		(after) => {
-			_order = after
+			_order.value = after
 		}
 	)
 
 	watch(
 		() => props.orderKey,
 		(after) => {
-			_key = after
+			_key.value = after
 		}
 	)
 
@@ -344,13 +344,13 @@
 
 	function onSortChange({ key, order }: { key: string; order: string }) {
 		/*表头排序(私有)*/
-		if (_order === 'normal') {
+		if (_order.value === 'normal') {
 			/*恢复到默认页面排序*/
-			_key = props.orderKey
-			_order = props.orderDefault
+			_key.value = props.orderKey
+			_order.value = props.orderDefault
 		} else {
-			_key = key
-			_order = order
+			_key.value = key
+			_order.value = order
 		}
 		current.value = 1
 		getTableData()
@@ -418,10 +418,10 @@
 		/*拉取表格数据（公开）*/
 		return new Promise((resolve) => {
 			if (order) {
-				_order = order
+				_order.value = order
 			}
 			if (orderKey) {
-				_key = orderKey
+				_key.value = orderKey
 			}
 			if (props.url) {
 				$fetch[props.method](props.url, queryData.value, '', [], { spin: props.getDataLoading })
