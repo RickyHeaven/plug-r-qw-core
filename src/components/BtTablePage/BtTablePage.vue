@@ -344,7 +344,7 @@
 
 	function onSortChange({ key, order }: { key: string; order: string }) {
 		/*表头排序(私有)*/
-		if (_order.value === 'normal') {
+		if (order === 'normal') {
 			/*恢复到默认页面排序*/
 			_key.value = props.orderKey
 			_order.value = props.orderDefault
