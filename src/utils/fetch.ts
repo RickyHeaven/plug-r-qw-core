@@ -246,6 +246,11 @@ function checkRequest(
 			if (config?.headers?.['Content-Type'] === 'multipart/form-data') {
 				data_ = data
 			} else {
+				if (Array.isArray(data)) {
+					data_ = []
+				} else {
+					data_ = {}
+				}
 				if (data && !isEmpty(data)) {
 					if (Array.isArray(data)) {
 						data_ = []
