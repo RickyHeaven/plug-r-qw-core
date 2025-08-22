@@ -242,15 +242,16 @@
 					let grandParent = parent?.parentElement
 					let br = document.createElement('br')
 					grandParent?.insertBefore(br, tt)
-					tt = br.nextElementSibling
-					if (tt?.className.indexOf('inlineTreeNodeF') === -1) {
-						tt.setAttribute('class', tt.className + ' inlineTreeNodeF')
-					}
-				}
-				while (tt?.nextElementSibling) {
-					tt = tt.nextElementSibling
-					if (tt.className.indexOf('inlineTreeNodeF') === -1) {
-						tt.setAttribute('class', tt.className + ' inlineTreeNodeF')
+					const ttP = br.nextElementSibling
+					if (ttP) {
+						const ttC = ttP.children
+						if (ttC) {
+							for (let cItem of ttC) {
+								if (cItem?.className.indexOf('inlineTreeNodeF') === -1) {
+									cItem.setAttribute('class', cItem.className + ' inlineTreeNodeF')
+								}
+							}
+						}
 					}
 				}
 			}

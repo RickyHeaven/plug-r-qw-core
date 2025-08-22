@@ -43,6 +43,14 @@ const router = createRouter({
 			}
 		},
 		{
+			path: '/checkboxTree',
+			name: 'CheckboxTree',
+			component: () => import('@/views/CheckboxTreeEX.vue'),
+			meta: {
+				desc: '复选框树'
+			}
+		},
+		{
 			path: '/tableSetting',
 			name: 'TableSetting',
 			component: () => import('@/views/TableSettingEX.vue'),
