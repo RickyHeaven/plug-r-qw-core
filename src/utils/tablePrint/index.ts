@@ -39,9 +39,13 @@ function init(router: any) {
 
 function columnsHandle(item: any) {
 	if (myTypeof(item) === 'Object') {
-		item.width = item.minWidth || 100
+		if (!item.hasOwnProperty('width')) {
+			item.width = item.minWidth || 100
+		}
+		if (item.hasOwnProperty('minWidth')) {
+			delete item.minWidth
+		}
 		item.sortable = false
-		delete item.minWidth
 		delete item.__id
 		item.resizable = true
 		if (item.children && myTypeof(item.children) === 'Array') {
