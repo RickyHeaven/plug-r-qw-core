@@ -4,7 +4,7 @@
 
 <script lang="ts" setup>
 	import { h } from 'vue'
-	import { cloneDeep } from 'lodash-es'
+	import { cloneDeep, debounce } from 'lodash-es'
 	import { TableColumnConfig, Radio } from 'view-ui-plus'
 	import type { PredicateFunc } from '../../public'
 	import Proxy from '../../utils/proxy'
@@ -103,7 +103,7 @@
 	let currentIndex: number | null
 	let _key = ref<string>(props.orderKey)
 	let _order = ref<string>(props.orderDefault)
-	const tableContainerHeight = 300
+	const tableContainerHeight = ref(300)
 
 	const columnsFixed = computed(() => {
 		for (let e of props.columns) {
@@ -217,6 +217,7 @@
 	const selectedKeys = computed(() => selected.map((e: Record<string, any>) => e?.btKey))
 
 	const tableRef = ref()
+	const tableContainerLOI = ref()
 
 	watch(() => props.searchData, search, { deep: true })
 
@@ -500,7 +501,41 @@
 		}
 	}
 
-	onMounted(initTable)
+	function firstGetHeight() {
+		/*私有*/
+		if (tableContainerHeight.value < 50) {
+			setTimeout(firstGetHeight, 100)
+		} else {
+			setTimeout(getTableContainerHeight, 10)
+		}
+	}
+
+	function getTableContainerHeight() {
+		/*私有*/
+		tableContainerHeight.value = tableContainerLOI.value?.clientHeight || 0
+	}
+
+	function handleResize() {
+		/*私有，table重新计算尺寸布局*/
+		getTableContainerHeight()
+		tableRef.value?.handleResize?.()
+	}
+
+	const debounceResize = debounce(handleResize, 300)
+
+	onMounted(() => {
+		initTable()
+		if (fixedTable.value) {
+			firstGetHeight()
+			window.addEventListener('resize', debounceResize)
+		}
+	})
+
+	onBeforeUnmount(() => {
+		if (fixedTable.value) {
+			window.removeEventListener('resize', debounceResize)
+		}
+	})
 
 	defineExpose({
 		dataS,
