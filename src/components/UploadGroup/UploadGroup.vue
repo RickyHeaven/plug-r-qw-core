@@ -56,6 +56,7 @@
 	const fileDefaultList = shallowRef<any[]>([]) //从服务器返回的数据整理完成的文件集合
 	const localImgSrcList = shallowRef<any[]>([])
 	let tempStorage: Record<string, any> = {}
+	const fileLength = ref(0)
 	const previewType = computed(() => {
 		if (!props.manualUpload && props.showImg && fileListItemIsIMG.value) {
 			//上传到服务器，图片模式
@@ -239,6 +240,7 @@
 
 	function clear() {
 		fileList.value = []
+		fileLength.value = 0
 	}
 
 	function getName(item: any) {
@@ -261,6 +263,9 @@
 			let _f = fileList.value
 			_f?.splice(index, 1)
 			fileList.value = _f
+			if (fileLength.value) {
+				fileLength.value--
+			}
 		}
 	}
 
@@ -320,6 +325,11 @@
 	}
 
 	function handelManualUpload(file: any) {
+		if (props.length && fileLength.value >= props.length) {
+			$swal(t('r.info.title'), t('r.uploadLength', [props.length]), 'warning')
+			return false
+		}
+		fileLength.value++
 		if (props.manualUpload) {
 			if (file) {
 				let type = getFileTypeByName(file.name)
@@ -405,6 +415,9 @@
 			let _f = fileList.value
 			_f?.splice(_fileIdList.indexOf(id), 1)
 			fileList.value = _f
+			if (fileLength.value) {
+				fileLength.value--
+			}
 		}
 	}
 </script>
