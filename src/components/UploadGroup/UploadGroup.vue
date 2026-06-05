@@ -444,9 +444,7 @@
 		>
 			<Button
 				icon="md-cloud-upload"
-				:class="{
-					disabledR: (props.length > 0 && fileList?.length >= props.length) || Boolean(props.disabled)
-				}"
+				:disabled="(props.length > 0 && fileList?.length >= props.length) || Boolean(props.disabled)"
 				>{{ t('r.selectFile') }}
 			</Button>
 		</Upload>
