@@ -151,7 +151,7 @@ export default defineConfig({
 					moment: 'moment',
 					sweetalert: 'swal',
 					'vue-i18n': 'VueI18n',
-					'vue-json-viewer': 'JsonView',
+					'vue-json-viewer': 'VueJsonViewer',
 					'vue-router': 'VueRouter'
 				}
 			}

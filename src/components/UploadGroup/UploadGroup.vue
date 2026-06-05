@@ -357,6 +357,7 @@
 	}
 
 	function uploadError(error: any) {
+		fileLength.value--
 		console.warn(error)
 		$swal(t('r.uploadError'), '', 'error')
 	}

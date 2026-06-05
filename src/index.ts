@@ -13,7 +13,7 @@ import localeFile from './locale'
 import { init } from './utils/timer'
 import { set } from './utils/amap'
 import './utils/wangeditor5init'
-import JsonView from 'vue-json-viewer'
+import JsonViewer from 'vue-json-viewer'
 import clickOutside from './directives/clickOutside'
 
 export * from './components'
@@ -27,6 +27,12 @@ export const i18n = localeFile.i18n
 const methodsR: Record<string, any> = {
 	...outFunc,
 	...globalFunc
+}
+
+const JsonViewerPlugin = {
+	install(app: App) {
+		app.component('JsonViewer', JsonViewer)
+	}
 }
 
 export interface plugROption {
@@ -44,7 +50,7 @@ export interface plugROption {
 export const install = function (app: App, options: plugROption = {}) {
 	outFunc.$fetch.init(options.useStore || options.store, app)
 
-	app.use(JsonView)
+	JsonViewerPlugin.install(app)
 
 	if (options.locale) {
 		localeFile.use(options.locale)
