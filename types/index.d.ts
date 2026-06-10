@@ -1025,6 +1025,19 @@ export declare function decimalDigitsLimit(val: number | string, num?: number): 
 
 declare function deleteRow(index: number): void;
 
+declare type DirectiveArg = [string] | [string, any] | [string, any, string] | [string, any, string, Record<string, any>];
+
+/**
+ *返回带自定义指令的组件
+ * @param vnode 要加指令的组件
+ * @param directives 指令 具体数据结构为单条指令的参数，护着多条指令参数组成的数组，
+ * 在这里举例单条指令参数为：['pin',200,'top',{animate:true}],意思是<div v-pin:top.animate="200"></div>，
+ * 单条指令参数的四个值，从前到后分别是：指令名、指令值、指令参数、指令修饰符，如果不需要，可以省略数组的尾元素（意思是参数可以是1个或2个或3个或4个）
+ * 这里实际使用示例代码为：directivesComponent(h('div'), ['pin',200,'top',{animate:true}])
+ * 注意：该方法只能在setup() 或渲染函数内调用。
+ */
+export declare function directivesComponent(vnode: any, directives: DirectiveArg | Array<DirectiveArg>): any;
+
 /**
  * @description 打印Dom(网页指定的内容)
  * @param {String} data 要打印的dom数据，一般使用dom操作获取dom，然后将其outerHTML作为data传进去就行
