@@ -339,10 +339,12 @@
 						t('r.supportType') + ((props.format?.length && String(props.format)) || t('r.none')),
 						'warning'
 					)
+					fileLength.value--
 					return false
 				}
 				if (props.maxSize && file.size > props.maxSize * 1024) {
 					$swal(t('r.fileIsBig'), t('r.supportSize') + props.maxSize + 'kb', 'warning')
+					fileLength.value--
 					return false
 				}
 				//触发computed的set
@@ -373,15 +375,18 @@
 			_f?.push(file)
 			fileList.value = _f
 		} else {
+			fileLength.value--
 			$swal(t('r.uploadFail'), response?.message || '', 'error')
 		}
 	}
 
 	function overSize() {
+		fileLength.value--
 		$swal(t('r.fileIsBig'), t('r.supportSize') + props.maxSize + ' kb', 'warning')
 	}
 
 	function onFormatError() {
+		fileLength.value--
 		$swal(
 			t('r.wrongFileType'),
 			t('r.supportType') + ((props.format?.length && String(props.format)) || t('r.none')),
