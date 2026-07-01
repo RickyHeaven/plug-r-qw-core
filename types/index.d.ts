@@ -1053,6 +1053,15 @@ export declare function downloadFileByFormSubmit(url: string, data?: PlainObject
 
 export declare function downloadFileReaderFile(name: string, href: string): void;
 
+/**
+ * 文件导出（基于fetch+Blob，支持精确蒙层控制）
+ * @param {string} url 导出路径
+ * @param {object} data 请求参数
+ * @param {string} method 请求方式，默认'get'
+ * @param {string} filename 自定义文件名（可选，不传则从响应头获取或使用默认名）
+ */
+export declare function downloadFileWithSpin(url: string, data?: PlainObject, method?: string, filename?: string): Promise<void>;
+
 export declare const EditorPro: DefineComponent<__VLS_Props_20, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
 "on-change": (...args: any[]) => void;
 "update:modelValue": (...args: any[]) => void;
@@ -1082,9 +1091,11 @@ export declare function fakeALinkClick(obj: Record<string, any>): void;
  * 文件导出功能（调用文件下载方法downloadFileByFormSubmit）
  * @param url 导出路径
  * @param data 参数
- * @param method 请求方式
+ * @param method 请求方式，默认'get'
+ * @param spin 是否显示loading，默认值false
+ * @param filename 自定义文件名（可选，不传则从响应头获取或使用默认名）
  */
-export declare function fileExport(this: any, url: string, data?: PlainObject, method?: string): void;
+export declare function fileExport(this: any, url: string, data?: PlainObject, method?: string, spin?: boolean, filename?: string): Promise<void>;
 
 /**
  * 在目标集合中按条件查找或直接查找，返回第一个满足条件的元素或路径

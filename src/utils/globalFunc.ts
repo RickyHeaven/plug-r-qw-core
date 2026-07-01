@@ -9,6 +9,7 @@ import type { Collection, PlainObject, PredicateFunc } from '../public'
 import { isPlainObject } from 'lodash-es'
 import $swal from './swal'
 import TableTooltip from '../components/TableTooltip/TableTooltip.vue'
+import { counts } from './spin'
 
 export const isClient = typeof window !== 'undefined'
 
@@ -235,16 +236,13 @@ export function downloadFileByFormSubmit(url: string, data: PlainObject = {}, me
 		 config.js里配置了 window.g={mgrURL:'http://mgr.myweb.com'}
 		 请求地址 ‘/mgr/file’ 会被改变为 'http://mgr.myweb.com/file'
 		 */
-		// @ts-ignore
 		let httpEnv = Object.keys(window.g)
 			.filter((e) => e?.indexOf?.('URL') > -1)
 			.map((e) => e.replace?.('URL', ''))
 
 		for (let item of httpEnv) {
 			let regExp = new RegExp('^/' + item + '(?=/.*$)', 'i')
-			// @ts-ignore
 			if (regExp.test(url) && window.g[item + 'URL']) {
-				// @ts-ignore
 				_url = window.g[item + 'URL'] + url.replace(regExp, '')
 				break
 			}
@@ -279,9 +277,18 @@ export function downloadFileByFormSubmit(url: string, data: PlainObject = {}, me
  * 文件导出功能（调用文件下载方法downloadFileByFormSubmit）
  * @param url 导出路径
  * @param data 参数
- * @param method 请求方式
+ * @param method 请求方式，默认'get'
+ * @param spin 是否显示loading，默认值false
+ * @param filename 自定义文件名（可选，不传则从响应头获取或使用默认名）
  */
-export function fileExport(this: any, url: string, data: PlainObject = {}, method: string = 'get'): void {
+export async function fileExport(
+	this: any,
+	url: string,
+	data: PlainObject = {},
+	method: string = 'get',
+	spin: boolean = false,
+	filename?: string
+): Promise<void> {
 	if (
 		data.hasOwnProperty('columns') &&
 		(data['columns'] === '' || data['columns'] === null || data['columns'] === undefined)
@@ -292,7 +299,105 @@ export function fileExport(this: any, url: string, data: PlainObject = {}, metho
 		})
 		return
 	}
-	downloadFileByFormSubmit(url, data, method)
+	if (spin) {
+		await downloadFileWithSpin(url, data, method, filename)
+	} else {
+		downloadFileByFormSubmit(url, data, method)
+	}
+}
+
+/**
+ * 文件导出（基于fetch+Blob，支持精确蒙层控制）
+ * @param {string} url 导出路径
+ * @param {object} data 请求参数
+ * @param {string} method 请求方式，默认'get'
+ * @param {string} filename 自定义文件名（可选，不传则从响应头获取或使用默认名）
+ */
+export async function downloadFileWithSpin(
+	url: string,
+	data: PlainObject = {},
+	method: string = 'get',
+	filename?: string
+): Promise<void> {
+	counts(true)
+
+	try {
+		let _url = url
+		if (window?.g) {
+			let httpEnv = Object.keys(window.g)
+				.filter((e) => e?.indexOf('URL') > -1)
+				.map((e) => e?.replace('URL', ''))
+
+			for (let item of httpEnv) {
+				let regExp = new RegExp('^/' + item + '(?=/.*$)', 'i')
+				if (regExp.test(url) && window.g[item + 'URL']) {
+					_url = window.g[item + 'URL'] + url.replace(regExp, '')
+					break
+				}
+			}
+		}
+
+		const fetchOptions: RequestInit = {
+			method: method.toUpperCase(),
+			credentials: 'include'
+		}
+
+		if (method.toLowerCase() === 'get' && Object.keys(data).length > 0) {
+			const params = new URLSearchParams()
+			for (let key in data) {
+				if (data.hasOwnProperty(key) && (data[key] || data[key] === 0 || data[key] === false || data[key] === '')) {
+					params.append(key, data[key])
+				}
+			}
+			_url += (_url.includes('?') ? '&' : '?') + params.toString()
+		}
+
+		if (['post', 'put'].includes(method.toLowerCase())) {
+			fetchOptions.headers = {
+				'Content-Type': 'application/json'
+			}
+			fetchOptions.body = JSON.stringify(data)
+		}
+
+		const response = await fetch(_url, fetchOptions)
+
+		if (!response.ok) {
+			throw new Error('下载失败')
+		}
+
+		let fileName = filename || 'download'
+		if (!filename) {
+			let contentDisposition = response.headers.get('Content-Disposition')
+			if (contentDisposition) {
+				contentDisposition = decodeURIComponent(contentDisposition)
+				const match = contentDisposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/)
+				if (match && match[1]) {
+					fileName = match[1].replace(/['"]/g, '')
+				}
+			} else {
+				const urlPath = _url.split('?')[0]
+				const nameFromUrl = urlPath.substring(urlPath.lastIndexOf('/') + 1)
+				if (nameFromUrl && nameFromUrl.includes('.')) {
+					fileName = decodeURIComponent(nameFromUrl)
+				}
+			}
+		}
+
+		const blob = await response.blob()
+		const downloadUrl = window.URL.createObjectURL(blob)
+		const link = document.createElement('a')
+		link.href = downloadUrl
+		link.download = fileName
+		document.body.appendChild(link)
+		link.click()
+
+		document.body.removeChild(link)
+		window.URL.revokeObjectURL(downloadUrl)
+	} catch (error) {
+		console.error('下载出错:', error)
+	} finally {
+		counts(false)
+	}
 }
 
 /**
