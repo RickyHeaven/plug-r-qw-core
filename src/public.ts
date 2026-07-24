@@ -127,6 +127,8 @@ export interface FormItem {
 
 	icon?: string
 
+	inputInMap?: boolean
+
 	itemBorder?: boolean
 
 	key?: string

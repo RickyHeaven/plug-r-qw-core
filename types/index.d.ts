@@ -468,6 +468,7 @@ declare type __VLS_Props_14 = {
     placeholder?: string;
     disabled?: boolean;
     showMap?: boolean;
+    inputInMap?: boolean;
 };
 
 declare type __VLS_Props_15 = {
@@ -1182,6 +1183,7 @@ declare interface FormItem {
     format?: string | string[];
     height?: number | string;
     icon?: string;
+    inputInMap?: boolean;
     itemBorder?: boolean;
     key?: string;
     key2?: string;
@@ -1352,6 +1354,7 @@ export declare const InputMap: DefineComponent<__VLS_Props_14, {}, {}, {}, {}, C
 "onUpdate:modelValue"?: ((...args: any[]) => any) | undefined;
 }>, {
 disabled: boolean;
+inputInMap: boolean;
 showMap: boolean;
 modelValue: Record<string, any>;
 width: string | number;

@@ -367,6 +367,7 @@
 			:disabled="Boolean(props.item.disabled) || props.disabled"
 			:show-map="props.item.showMap !== false"
 			:height="props.item.mapHeight || '250px'"
+			:input-in-map="props.item.inputInMap !== false"
 			@on-change="itemChange($event, props.item)"
 		/>
 		<div v-else-if="props.item.type === 'custom'" class="inlineBlock" :style="itemStyle">

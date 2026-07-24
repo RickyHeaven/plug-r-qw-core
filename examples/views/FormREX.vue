@@ -646,6 +646,18 @@
 			info: 'inputMap, 该示例展示功能：地图，收集地点经纬度，详细说明见InputMap组件的文档'
 		},
 		{
+			type: 'inputMap',
+			label: '位置（分离式）',
+			key: 'lng2',
+			key2: 'lat2',
+			key3: 'name2',
+			defaultVal: 106.499401,
+			defaultVal2: 29.616077,
+			defaultVal3: '光电园(地铁站)',
+			inputInMap: false,
+			info: 'inputMap inputInMap=false, 该示例展示功能：输入框和地图分离布局，详细说明见InputMap组件的文档'
+		},
+		{
 			type: 'editorPro',
 			label: '文章',
 			key: 'articleA',
