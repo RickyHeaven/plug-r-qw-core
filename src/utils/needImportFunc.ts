@@ -1,6 +1,6 @@
 /**
  * @description 公共方法集合，需要单独引用才能使用
- * @author ricky zhangqingcq@foxmail.com
+ * @author Ricky zhangqingcq@foxmail.com
  * @created 2023.07.14
  */
 import type { Collection } from '../public'

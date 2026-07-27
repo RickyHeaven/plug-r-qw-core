@@ -14,7 +14,9 @@ import { init } from './utils/timer'
 import { set } from './utils/amap'
 import './utils/wangeditor5init'
 import JsonViewer from 'vue-json-viewer'
-import clickOutside from './directives/clickOutside'
+import clickOutside from './directives/clickOutside/index'
+import has from './directives/has/index'
+import loadmore from './directives/loadmore/index'
 
 export * from './components'
 export * from './utils/globalFunc'
@@ -82,39 +84,10 @@ export const install = function (app: App, options: plugROption = {}) {
 	}
 
 	if (!app.directive('has')) {
-		app.directive('has', (el, binding) => {
-			if (binding.value && !globalFunc.hasPermission(binding.value)) {
-				el.style.display = 'none'
-			}
-		})
+		app.directive('has', has)
 	}
 	if (!app.directive('loadmore')) {
-		//select下拉滚动监听事件 可通过指令参数传递class来指定容器
-		app.directive('loadmore', {
-			mounted(el, binding) {
-				// 获取定义好的scroll盒子
-				let SELECT_DOM: any = el
-
-				if (binding.arg) {
-					SELECT_DOM = document.getElementsByClassName(binding.arg)?.[0]
-				}
-				if (!SELECT_DOM) {
-					return
-				}
-				SELECT_DOM.addEventListener('scroll', function () {
-					/*
-					 * scrollHeight 获取元素内容高度(只读)
-					 * scrollTop 获取或者设置元素的偏移值,常用于, 计算滚动条的位置, 当一个元素的容器没有产生垂直方向的滚动条, 那它的scrollTop的值默认为0.
-					 * clientHeight 读取元素的可见高度(只读)
-					 * 如果元素滚动到底, 下面等式返回true, 没有则返回false:
-					 * ele.scrollHeight - ele.scrollTop === ele.clientHeight;
-					 */
-					if (SELECT_DOM.scrollTop > 0 && SELECT_DOM.scrollHeight - SELECT_DOM.scrollTop <= SELECT_DOM.clientHeight) {
-						binding.value()
-					}
-				})
-			}
-		})
+		app.directive('loadmore', loadmore)
 	}
 	if (!app.directive('clickOutside')) {
 		app.directive('clickOutside', clickOutside)

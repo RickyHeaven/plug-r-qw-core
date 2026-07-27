@@ -1,12 +1,33 @@
 let count = 0
-let loader = document.createElement('div')
-loader.setAttribute('class', 'spinModal')
+let loader: HTMLElement | null = null
 
-loader.innerHTML =
-	'<div class="loader"><svg class="circular" viewBox="25 25 50 50"><circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="5" stroke-miterlimit="10" /></svg></div>'
+function createLoader(): HTMLElement {
+	if (!loader) {
+		loader = document.createElement('div')
+		loader.setAttribute('class', 'spinModal')
+		loader.innerHTML =
+			'<div class="loader"><svg class="circular" viewBox="25 25 50 50"><circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="5" stroke-miterlimit="10" /></svg></div>'
 
-window.onload = function () {
-	document.getElementsByTagName('body')[0].append(loader)
+		const body = document.getElementsByTagName('body')[0]
+		if (body) {
+			body.append(loader)
+		} else if (document.readyState === 'loading') {
+			document.addEventListener('DOMContentLoaded', () => {
+				document.getElementsByTagName('body')[0]?.append(loader!)
+			})
+		}
+	}
+	return loader
+}
+
+if (typeof document !== 'undefined') {
+	if (document.readyState === 'loading') {
+		document.addEventListener('DOMContentLoaded', () => {
+			createLoader()
+		})
+	} else {
+		createLoader()
+	}
 }
 
 /**
@@ -14,10 +35,11 @@ window.onload = function () {
  * @param d 开为：true，关：不传
  */
 export function toggleSpin(d?: boolean): void {
+	const loaderEl = loader || createLoader()
 	if (d) {
-		loader.classList.add('show')
+		loaderEl.classList.add('show')
 	} else {
-		loader.classList.remove('show')
+		loaderEl.classList.remove('show')
 	}
 }
 

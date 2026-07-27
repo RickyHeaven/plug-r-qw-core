@@ -1,12 +1,12 @@
 /**
  * @description 全局公共方法集合，挂在app.config.globalProperties下(按需引入模式下除外)，组合式开发模式下推荐单独引用 import {xxx} from
  *   '@zhangqingcq/plug-r-qw'
- * @author ricky zhangqingcq@foxmail.com
+ * @author Ricky zhangqingcq@foxmail.com
  * @created 2023.07.14
  */
 import { h, isRef, resolveDirective, withDirectives } from 'vue'
 import type { Collection, PlainObject, PredicateFunc } from '../public'
-import { isPlainObject } from 'lodash-es'
+import { isPlainObject, cloneDeep } from 'lodash-es'
 import $swal from './swal'
 import TableTooltip from '../components/TableTooltip/TableTooltip.vue'
 import { counts } from './spin'
@@ -37,8 +37,39 @@ export function toLine(name: string): string {
 
 /**
  * 去掉对象属性前后空格
+ * 注意：返回的是新对象，不会修改原始对象
  */
 export function trimObj(obj: Collection): Collection {
+	const clonedObj = cloneDeep(obj)
+	let p = myTypeof(clonedObj)
+	if (p === 'Object') {
+		for (let key in clonedObj) {
+			if (clonedObj.hasOwnProperty(key)) {
+				let o = myTypeof(clonedObj[key])
+				if (o === 'String') {
+					clonedObj[key] = clonedObj[key].trim()
+				} else if (o === 'Object' || o === 'Array') {
+					trimObjInPlace(clonedObj[key])
+				}
+			}
+		}
+	} else if (p === 'Array') {
+		for (let i = 0, l = clonedObj.length; i < l; i++) {
+			let t = myTypeof(clonedObj[i])
+			if (t === 'String') {
+				clonedObj[i] = clonedObj[i].trim()
+			} else if (t === 'Array' || t === 'Object') {
+				trimObjInPlace(clonedObj[i])
+			}
+		}
+	}
+	return clonedObj
+}
+
+/**
+ * 内部函数：原地trim对象（用于递归调用）
+ */
+function trimObjInPlace(obj: Collection): void {
 	let p = myTypeof(obj)
 	if (p === 'Object') {
 		for (let key in obj) {
@@ -47,7 +78,7 @@ export function trimObj(obj: Collection): Collection {
 				if (o === 'String') {
 					obj[key] = obj[key].trim()
 				} else if (o === 'Object' || o === 'Array') {
-					trimObj(obj[key])
+					trimObjInPlace(obj[key])
 				}
 			}
 		}
@@ -57,11 +88,10 @@ export function trimObj(obj: Collection): Collection {
 			if (t === 'String') {
 				obj[i] = obj[i].trim()
 			} else if (t === 'Array' || t === 'Object') {
-				trimObj(obj[i])
+				trimObjInPlace(obj[i])
 			}
 		}
 	}
-	return obj
 }
 
 /**
@@ -560,7 +590,7 @@ export function setValByOption({
  */
 export function hasPermission(value: string): boolean {
 	let btnPermissions = sessionStorage.getItem('btnPermissions')
-	if (btnPermissions) {
+	if (btnPermissions && btnPermissions.trim() !== '') {
 		return btnPermissions.split(',').indexOf(value) > -1
 	}
 	return false
@@ -572,7 +602,7 @@ export function hasPermission(value: string): boolean {
  * @returns {boolean}
  */
 export function isNaN(v: any): boolean {
-	return myTypeof(v) === 'Number' && String(v) === 'NaN'
+	return typeof v === 'number' && Number.isNaN(v)
 }
 
 /**

@@ -1,6 +1,6 @@
 /**
  * @description 可自动销毁的定时器和计时器
- * @author ricky zhangqingcq@foxmail.com
+ * @author Ricky zhangqingcq@foxmail.com
  * @created 2023.07.14
  */
 
@@ -13,10 +13,10 @@ let intervalBox: any[] = []
 export const init = function (r: any) {
 	if (r && r.beforeEach) {
 		r.beforeEach(() => {
-			timeoutBox.map((e) => {
+			timeoutBox.forEach((e) => {
 				window.clearTimeout(e)
 			})
-			intervalBox.map((e) => {
+			intervalBox.forEach((e) => {
 				window.clearInterval(e)
 			})
 			timeoutBox.length = 0

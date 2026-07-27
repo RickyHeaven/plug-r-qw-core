@@ -1,6 +1,6 @@
 /**
  * @description 虚拟微型数据库
- * @author ricky zhangqingcq@foxmail.com
+ * @author Ricky zhangqingcq@foxmail.com
  * @created 2021.07.02
  */
 

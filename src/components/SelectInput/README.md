@@ -20,4 +20,4 @@
 
 ### 事件
 
-- on-change select或input值改变（如果使用v-model绑定组件的值，这个事件就是多余的），返回包含select和input值的对象，如果select改变且之前有值，则多返回一个字段`beforeKey`表示之前的key值，如：`{key:'name',val:'ricky',beforeKey:'id'}`
+- on-change select或input值改变（如果使用v-model绑定组件的值，这个事件就是多余的），返回包含select和input值的对象，如果select改变且之前有值，则多返回一个字段`beforeKey`表示之前的key值，如：`{key:'name',val:'Ricky',beforeKey:'id'}`

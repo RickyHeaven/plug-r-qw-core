@@ -1,6 +1,6 @@
 /**
  * @description 全屏预览，原生dom技术
- * @author ricky zhangqingcq@foxmail.com
+ * @author Ricky zhangqingcq@foxmail.com
  * @created 2023.08.23
  */
 
@@ -8,6 +8,7 @@ import { first } from 'lodash-es'
 import { t } from '../locale'
 
 let _index = 0
+let _previewInstances: Array<{ child: HTMLElement; keyupHandler: (e: any) => void }> = []
 
 function domHandle(src: any, _i: number, imgEl: any, nameEl: any) {
 	if (nameEl) {
@@ -86,22 +87,30 @@ export default function fullScreenImgByDom(this: any, src: any, index: number = 
 	child.setAttribute('class', 'fullScreenImgByDom')
 	child.innerHTML = `<div class='previewInner'><div class='pageFBt left${
 		arrSrc && src.length > 1 ? '' : ' hide'
-	}'><i class='ivu-icon ivu-icon-ios-arrow-back' title='${last}' ></i></div><img src='${_src}' alt='${fullImg}' ><div class='pageFBt right${
+	}'><i class='ivu-icon ivu-icon-ios-arrow-back' title='${last}' ></i></div><img alt='${fullImg}' ><div class='pageFBt right${
 		arrSrc && src.length > 1 ? '' : ' hide'
 	}'><i class='ivu-icon ivu-icon-ios-arrow-forward' title='${next}' ></i></div><i class='ivu-icon ivu-icon-md-close' title='${close}' ></i></div><p class='pNotice cannotSelect'>${notice}</p><p class='pName ${
 		_name ? '' : 'hide'
 	}'>${_name}</p>`
 
+	const imgEl = child.querySelector('img')
+	if (imgEl && _src) {
+		imgEl.src = _src
+	}
+
 	function closeHandler() {
 		let bb = first(document.getElementsByTagName('body'))
-		if (bb) {
+		if (bb && child.parentNode) {
 			bb.removeChild(child)
 		}
 		document.removeEventListener('keyup', keyupHandler)
+		const idx = _previewInstances.findIndex((inst) => inst.child === child)
+		if (idx > -1) {
+			_previewInstances.splice(idx, 1)
+		}
 	}
 
 	child.querySelector('.ivu-icon-md-close')?.addEventListener?.('click', closeHandler)
-	const imgEl = child.querySelector('img')
 	const nameEl = child.querySelector('.pName')
 	child.querySelector('.pageFBt.left')?.addEventListener('click', function () {
 		lastImg(arrSrc, src, imgEl, nameEl)
@@ -123,6 +132,7 @@ export default function fullScreenImgByDom(this: any, src: any, index: number = 
 		}
 	}
 
+	_previewInstances.push({ child, keyupHandler })
 	document.addEventListener('keyup', keyupHandler)
 	bodyEl?.appendChild?.(child)
 	child.focus({ preventScroll: true })

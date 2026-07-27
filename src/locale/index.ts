@@ -15,6 +15,7 @@ const message: Record<string, any> = {
 let nowLang: Record<keyof any, any>
 let merged: Record<string, any> = {}
 let vueI18n: Record<keyof any, any>
+let isFormatting = false
 let i18nHandler = function (this: any, path: string, options?: Record<keyof any, any> | Array<string | number>) {
 	if (typeof this === 'object' && Reflect.has(this, '$t')) {
 		return this.$t(path, options)
@@ -36,6 +37,9 @@ let i18nHandler = function (this: any, path: string, options?: Record<keyof any,
 }
 
 export const t = function (this: any, path: string, options?: Record<keyof any, any> | Array<string | number>) {
+	if (isFormatting) {
+		return ''
+	}
 	let value = i18nHandler.apply(this, [path, options])
 	if (value !== null && value !== undefined) {
 		return value
@@ -48,7 +52,13 @@ export const t = function (this: any, path: string, options?: Record<keyof any, 
 		const property = array[i]
 		value = current[property]
 		if (i === j - 1) {
-			return format(value, options)
+			//防止format中调用t（该方法），形成递归
+			isFormatting = true
+			try {
+				return format(value, options)
+			} finally {
+				isFormatting = false
+			}
 		}
 		if (!value) {
 			return ''

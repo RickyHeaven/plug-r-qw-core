@@ -3,6 +3,7 @@
  * @author Ricky email:zhangqingcq@foxmail.com
  * @created 2023.05.10
  */
+import axios from 'axios'
 import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios'
 import { isEmpty } from 'lodash-es'
 import { t } from '../locale'
@@ -92,19 +93,27 @@ service.interceptors.response.use(
 /**
  * 封装请求结果和错误处理
  */
-function checkResult(r: Partial<AxiosResponse>, msg?: string | null, rPath?: string[], config?: RequestConfigR) {
-	if (config && config.spin) {
+function resultHandle(r: Partial<AxiosResponse>, msg?: string | null, rPath?: string[], config?: RequestConfigR) {
+	if (config?.spin) {
 		counts(false)
 	}
-	let y = true
-	let d = r && r.data
-	if (d) {
-		rPath = rPath ? rPath : []
-		for (let e of rPath) {
-			d = d[e]
-			y = y && d
-		}
-		if (y) {
+	if (r) {
+		let d = r.data
+		if (d !== undefined) {
+			if (!Array.isArray(rPath)) {
+				rPath = []
+			}
+			for (let e of rPath) {
+				if (typeof d !== 'object') {
+					console.error('请求返回结果不是对象，不可获取成员变量')
+					break
+				}
+				d = d[e]
+				if (d === undefined) {
+					console.error('从请求返回结果获取成员出错，找不到该字段：', e)
+					break
+				}
+			}
 			return d
 		}
 		msg && console.warn(msg)
@@ -129,7 +138,7 @@ function handleRequest(
 				service
 					.get(url, { params: data })
 					.then((r) => {
-						let d = checkResult(r, msg, rPath, config)
+						let d = resultHandle(r, msg, rPath, config)
 						if (d) {
 							s(d)
 						} else {
@@ -137,7 +146,7 @@ function handleRequest(
 						}
 					})
 					.catch((e) => {
-						checkResult({}, msg, rPath, config)
+						resultHandle({}, msg, rPath, config)
 						j(e)
 					})
 				break
@@ -146,7 +155,7 @@ function handleRequest(
 				service
 					.delete(url, { [keyT]: data })
 					.then((r) => {
-						let d = checkResult(r, msg, rPath, config)
+						let d = resultHandle(r, msg, rPath, config)
 						if (d) {
 							s(d)
 						} else {
@@ -154,7 +163,7 @@ function handleRequest(
 						}
 					})
 					.catch((e) => {
-						checkResult({}, msg, rPath, config)
+						resultHandle({}, msg, rPath, config)
 						j(e)
 					})
 				break
@@ -162,7 +171,7 @@ function handleRequest(
 				service
 					.post(url, data, config)
 					.then((r) => {
-						let d = checkResult(r, msg, rPath, config)
+						let d = resultHandle(r, msg, rPath, config)
 						if (d) {
 							s(d)
 						} else {
@@ -170,7 +179,7 @@ function handleRequest(
 						}
 					})
 					.catch((e) => {
-						checkResult({}, msg, rPath, config)
+						resultHandle({}, msg, rPath, config)
 						j(e)
 					})
 				break
@@ -178,7 +187,7 @@ function handleRequest(
 				service
 					.put(url, data, config)
 					.then((r) => {
-						let d = checkResult(r, msg, rPath, config)
+						let d = resultHandle(r, msg, rPath, config)
 						if (d) {
 							s(d)
 						} else {
@@ -186,7 +195,7 @@ function handleRequest(
 						}
 					})
 					.catch((e) => {
-						checkResult({}, msg, rPath, config)
+						resultHandle({}, msg, rPath, config)
 						j(e)
 					})
 				break
@@ -312,7 +321,7 @@ export default {
 	 * @param {string} url 请求地址
 	 * @param {object} data 请求数据
 	 * @param {string} msg 错误信息，在控制台输出，方便调试，不用可以不传，例如：
-	 * @example this.$fetch.post("/getDataB",{name:'ricky'},"获取数据B失败")
+	 * @example this.$fetch.post("/getDataB",{name:'Ricky'},"获取数据B失败")
 	 * @param {Array.<string>} rPath 请求结果提取路径，如：[data,list]表示data.list,如不需过滤可不传
 	 * @param {object} config 请求配置  如请求过程需要遮罩层，设置 spin:true即可
 	 * @return {Promise<object>}
@@ -416,7 +425,7 @@ export default {
 	 * @example this.$fetch.all(
 	 *  [
 	 *    this.$fetch.get("/getData"),
-	 *    this.$fetch.post("/getDataB",{name:'ricky'})
+	 *    this.$fetch.post("/getDataB",{name:'Ricky'})
 	 *  ]
 	 * )
 	 */,
@@ -425,7 +434,7 @@ export default {
 	 * @example this.$fetch.all(
 	 *  [
 	 *    this.$fetch.get("/getData"),
-	 *    this.$fetch.post("/getDataB",{name:'ricky'})
+	 *    this.$fetch.post("/getDataB",{name:'Ricky'})
 	 *  ]
 	 * )
 	 *  .then(

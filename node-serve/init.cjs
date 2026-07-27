@@ -1,6 +1,6 @@
 /**
  * @description 示例项目的NodeJS服务器（接口）
- * @author ricky zhangqingcq@foxmail.com
+ * @author Ricky zhangqingcq@foxmail.com
  * @created 2023.03.20
  */
 

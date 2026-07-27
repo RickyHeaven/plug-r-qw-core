@@ -32,7 +32,7 @@ export declare const $fetch: {
     * @param {string} url 请求地址
     * @param {object} data 请求数据
     * @param {string} msg 错误信息，在控制台输出，方便调试，不用可以不传，例如：
-    * @example this.$fetch.post("/getDataB",{name:'ricky'},"获取数据B失败")
+    * @example this.$fetch.post("/getDataB",{name:'Ricky'},"获取数据B失败")
     * @param {Array.<string>} rPath 请求结果提取路径，如：[data,list]表示data.list,如不需过滤可不传
     * @param {object} config 请求配置  如请求过程需要遮罩层，设置 spin:true即可
     * @return {Promise<object>}
@@ -89,7 +89,7 @@ export declare const $fetch: {
     * @example this.$fetch.all(
     *  [
     *    this.$fetch.get("/getData"),
-    *    this.$fetch.post("/getDataB",{name:'ricky'})
+    *    this.$fetch.post("/getDataB",{name:'Ricky'})
     *  ]
     * )
     */
@@ -98,7 +98,7 @@ export declare const $fetch: {
     * @example this.$fetch.all(
     *  [
     *    this.$fetch.get("/getData"),
-    *    this.$fetch.post("/getDataB",{name:'ricky'})
+    *    this.$fetch.post("/getDataB",{name:'Ricky'})
     *  ]
     * )
     *  .then(
@@ -135,7 +135,7 @@ export declare function $swal(this: any, option: string | {
 
 /**
  * @description 提示框
- * @author ricky zhangqingcq@foxmail.com
+ * @author Ricky zhangqingcq@foxmail.com
  * @created 2023.05.09
  */
 export declare function $swalConfirm(this: any, title: string, text: string, icon: string, onOk: () => void, closeOnClickOutside?: boolean): void;
@@ -904,7 +904,7 @@ export declare const BtTablePage: __VLS_WithSlots_6<typeof __VLS_component_6, __
 
 /**
  * @description 提示框
- * @author ricky zhangqingcq@foxmail.com
+ * @author Ricky zhangqingcq@foxmail.com
  * @created 2023.05.08
  */
 declare type ButtonC = {
@@ -1252,7 +1252,7 @@ export declare const FullPop: __VLS_WithSlots<typeof __VLS_component, __VLS_Slot
 
 /**
  * @description 全屏预览，原生dom技术
- * @author ricky zhangqingcq@foxmail.com
+ * @author Ricky zhangqingcq@foxmail.com
  * @created 2023.08.23
  */
 /**
@@ -1264,7 +1264,7 @@ export declare function fullScreenImgByDom(this: any, src: any, index?: number):
 
 /**
  * @description 全屏预览
- * @author ricky zhangqingcq@foxmail.com
+ * @author Ricky zhangqingcq@foxmail.com
  * @created 2023.08.24
  * 注意：不能全局调整Modal弹框尺寸，否则预览图片可能不居中，推荐使用另一个插件fullScreenImgByDom
  */
@@ -1827,6 +1827,7 @@ export declare function toLine(name: string): string;
 
  /**
   * 去掉对象属性前后空格
+  * 注意：返回的是新对象，不会修改原始对象
   */
  export declare function trimObj(obj: Collection): Collection;
 

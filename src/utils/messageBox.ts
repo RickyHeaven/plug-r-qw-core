@@ -10,7 +10,8 @@ import { myTypeof } from './globalFunc'
 import { t } from '../locale'
 import type { RenderFunc } from '../public'
 
-let loading: boolean = false
+const loadingBoxes: Map<string, boolean> = new Map()
+let instanceId = 0
 
 /**
  * 对话框
@@ -70,6 +71,9 @@ export default function messageBox(
 	let stringContent = myTypeof(content) === 'String'
 	const functionContent = typeof content === 'function'
 
+	const currentId = 'msgbox_' + (++instanceId)
+	loadingBoxes.set(currentId, false)
+
 	Modal.warning({
 		width: width,
 		footerHide: true,
@@ -102,10 +106,11 @@ export default function messageBox(
 											class: 'fr closeN',
 											type: 'text',
 											onClick() {
-												if (loading) {
+												if (loadingBoxes.get(currentId)) {
 													return
 												}
 												Modal.remove()
+												loadingBoxes.delete(currentId)
 												if (onClose && myTypeof(onClose) === 'Function') {
 													onClose()
 												}
@@ -157,7 +162,7 @@ export default function messageBox(
 												if (onOk && typeof onOk === 'function') {
 													const p = onOk()
 													if (p && myTypeof(p) === 'Promise') {
-														loading = true
+														loadingBoxes.set(currentId, true)
 														const el = e?.currentTarget || e?.target
 														if (el) {
 															el.classList?.add?.('ivu-btn-loading')
@@ -167,15 +172,18 @@ export default function messageBox(
 														}
 														Promise.resolve(p)
 															.then(() => {
-																loading = false
+																loadingBoxes.set(currentId, false)
 																Modal.remove()
+																loadingBoxes.delete(currentId)
 															})
 															.catch(() => {
-																loading = false
+																loadingBoxes.set(currentId, false)
 																Modal.remove()
+																loadingBoxes.delete(currentId)
 															})
 													} else {
 														Modal.remove()
+														loadingBoxes.delete(currentId)
 													}
 												}
 											}
@@ -192,10 +200,11 @@ export default function messageBox(
 										{
 											class: ['cancelBtN', !cancelBt && 'hide'],
 											onClick() {
-												if (loading) {
+												if (loadingBoxes.get(currentId)) {
 													return
 												}
 												Modal.remove()
+												loadingBoxes.delete(currentId)
 												if (myTypeof(onCancel) === 'Function') {
 													onCancel && onCancel()
 												}

@@ -612,6 +612,8 @@
 
 ### 本库自带自定义指令
 
+每个指令在src/directives目录下都有一个对应的README文档，可参考该文档来使用该指令，这里只对每个指令进行简单的说明。
+
 * has
   通过本库内方法hasPermission将传入指令的值进行解析（在sessionStorage中btnPermissions中查找传入的值），如果解析结果为false，则为绑定的元素添加`display:none`
   的内联样式，以此来实现元素的权限控制。
