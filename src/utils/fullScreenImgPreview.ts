@@ -53,10 +53,33 @@ export default function fullScreenImgPreview(this: any, src: string) {
 	})
 
 	setTimeout(() => {
-		const hideEl = document.getElementById(id)?.parentElement?.parentElement?.parentElement?.parentElement
-		const hideEl2 = document.getElementById(id)?.parentElement?.nextSibling as HTMLElement
-		hideEl && (hideEl.style.height = '0')
-		hideEl && (hideEl.style.padding = '0')
-		hideEl2 && (hideEl2.style.display = 'none')
+		const modalEl = document.getElementById(id)
+		if (!modalEl) return
+
+		let parent = modalEl.parentElement
+		let depth = 0
+		let hideEl: HTMLElement | null = null
+
+		while (parent && depth < 4) {
+			if (parent.classList?.contains?.('ivu-modal-content')) {
+				hideEl = parent
+				break
+			}
+			parent = parent.parentElement
+			depth++
+		}
+
+		if (!hideEl) {
+			hideEl = modalEl.closest?.('.ivu-modal-content') || null
+		}
+
+		const hideEl2 = modalEl.parentElement?.nextSibling as HTMLElement
+		if (hideEl) {
+			hideEl.style.height = '0'
+			hideEl.style.padding = '0'
+		}
+		if (hideEl2) {
+			hideEl2.style.display = 'none'
+		}
 	}, 10)
 }

@@ -161,6 +161,14 @@ const router = createRouter({
 			meta: {
 				desc: '全屏图片预览'
 			}
+		},
+		{
+			path: '/fullScreenImgPreview',
+			name: 'FullScreenImgPreview',
+			component: () => import('@/views/FullScreenImgPreviewEX.vue'),
+			meta: {
+				desc: '全屏图片预览（Modal方式）'
+			}
 		}
 	]
 })

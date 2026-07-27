@@ -4,14 +4,21 @@
  * @created 2023.07.14
  */
 
-let timeoutBox: any[] = []
-let intervalBox: any[] = []
+let timeoutBox: number[] = []
+let intervalBox: number[] = []
+let isInitialized = false
+
 /**
  * 初始化
  * @param {object} r router实例
  */
 export const init = function (r: any) {
-	if (r && r.beforeEach) {
+	if (isInitialized) {
+		console.warn('定时器模块已经初始化过，请勿重复调用 init')
+		return
+	}
+
+	if (r && typeof r.beforeEach === 'function') {
 		r.beforeEach(() => {
 			timeoutBox.forEach((e) => {
 				window.clearTimeout(e)
@@ -22,6 +29,7 @@ export const init = function (r: any) {
 			timeoutBox.length = 0
 			intervalBox.length = 0
 		})
+		isInitialized = true
 	} else {
 		console.warn(
 			'安装库plug-r-qw时未传入router，调用该库的定时器方法产生的定时器将不能自动销毁，请传入router：Vue.use(plugRQw,{router,...})'
@@ -30,19 +38,59 @@ export const init = function (r: any) {
 }
 
 export const setTimeout = function (fn: () => void, time: number): number {
+	if (typeof fn !== 'function') {
+		throw new TypeError('第一个参数必须是函数')
+	}
+	if (typeof time !== 'number' || time < 0) {
+		throw new TypeError('第二个参数必须是非负数')
+	}
+
 	let handler = window.setTimeout(fn, time)
 	timeoutBox.push(handler)
 	return handler
 }
 
 export const setInterval = function (fn: () => void, time: number): number {
+	if (typeof fn !== 'function') {
+		throw new TypeError('第一个参数必须是函数')
+	}
+	if (typeof time !== 'number' || time <= 0) {
+		throw new TypeError('第二个参数必须是正数')
+	}
+
 	let handler = window.setInterval(fn, time)
 	intervalBox.push(handler)
 	return handler
 }
 
+export const clearTimeout = function (handler: number): void {
+	window.clearTimeout(handler)
+	const index = timeoutBox.indexOf(handler)
+	if (index > -1) {
+		timeoutBox.splice(index, 1)
+	}
+}
+
+export const clearInterval = function (handler: number): void {
+	window.clearInterval(handler)
+	const index = intervalBox.indexOf(handler)
+	if (index > -1) {
+		intervalBox.splice(index, 1)
+	}
+}
+
+export const clearAll = function (): void {
+	timeoutBox.forEach((e) => window.clearTimeout(e))
+	intervalBox.forEach((e) => window.clearInterval(e))
+	timeoutBox.length = 0
+	intervalBox.length = 0
+}
+
 export default {
 	init,
 	setTimeout,
-	setInterval
+	setInterval,
+	clearTimeout,
+	clearInterval,
+	clearAll
 }

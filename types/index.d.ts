@@ -973,6 +973,9 @@ leaf: boolean;
 inlineLeaf: boolean;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>;
 
+declare const clearInterval_2: (handler: number) => void;
+export { clearInterval_2 as clearInterval }
+
 /**
  * 清空集合
  * @param val 被清空的集合
@@ -984,6 +987,9 @@ export declare function clearObj(val: Collection, ignoreList?: Array<keyof Colle
 declare function clearSelect(): void;
 
 declare function clearTableData(): void;
+
+declare const clearTimeout_2: (handler: number) => void;
+export { clearTimeout_2 as clearTimeout }
 
 declare function close_2(getData?: boolean): void;
 
@@ -1372,9 +1378,17 @@ export declare function isImgByFile(type: string): boolean;
  * 判断一个变量是否是NaN
  * @param v 变量
  * @returns {boolean}
+ * @deprecated 请使用 isNumberNaN 替代
  */
 declare function isNaN_2(v: any): boolean;
 export { isNaN_2 as isNaN }
+
+/**
+ * 判断一个变量是否是NaN
+ * @param v 变量
+ * @returns {boolean}
+ */
+export declare function isNumberNaN(v: any): boolean;
 
 export declare function isNumberValue(val: any): boolean;
 

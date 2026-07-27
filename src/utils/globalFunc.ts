@@ -255,16 +255,20 @@ export function decimalDigitsLimit(val: number | string, num: number = 2): strin
 export function downloadFileByFormSubmit(url: string, data: PlainObject = {}, method: string = 'get'): void {
 	let form = document.createElement('form')
 	let body = document.getElementsByTagName('body')[0]
+	if (!body) {
+		console.error('document.body 不存在，无法执行文件下载')
+		return
+	}
 	body.appendChild(form)
 	form.setAttribute('style', 'display:none')
 	form.setAttribute('target', '')
 	form.setAttribute('method', method)
 	let _url = url
-	if (window && window.hasOwnProperty('g')) {
+	if (window?.g) {
 		/*所有特定缩写字母开头的地址，都会被改变加上config.js（public里的全局配置文件，在index.html引入，在打包后通过更改该文件用于不
 		 同环境的部署）里配置的地址变成绝对地址，如:
 		 config.js里配置了 window.g={mgrURL:'http://mgr.myweb.com'}
-		 请求地址 ‘/mgr/file’ 会被改变为 'http://mgr.myweb.com/file'
+		 请求地址 '/mgr/file' 会被改变为 'http://mgr.myweb.com/file'
 		 */
 		let httpEnv = Object.keys(window.g)
 			.filter((e) => e?.indexOf?.('URL') > -1)
@@ -600,8 +604,18 @@ export function hasPermission(value: string): boolean {
  * 判断一个变量是否是NaN
  * @param v 变量
  * @returns {boolean}
+ * @deprecated 请使用 isNumberNaN 替代
  */
 export function isNaN(v: any): boolean {
+	return isNumberNaN(v)
+}
+
+/**
+ * 判断一个变量是否是NaN
+ * @param v 变量
+ * @returns {boolean}
+ */
+export function isNumberNaN(v: any): boolean {
 	return typeof v === 'number' && Number.isNaN(v)
 }
 
@@ -632,7 +646,7 @@ export function dataFilterOrToUrl(
 				val === '' ||
 				(myTypeof(val) === 'String' && val.trim() === '') ||
 				val === null ||
-				isNaN(val)
+				isNumberNaN(val)
 			) {
 				if (keepEmptyVal) {
 					if (toUrl) {

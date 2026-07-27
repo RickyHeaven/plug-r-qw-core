@@ -164,12 +164,12 @@ export default function messageBox(
 													if (p && myTypeof(p) === 'Promise') {
 														loadingBoxes.set(currentId, true)
 														const el = e?.currentTarget || e?.target
-														if (el) {
-															el.classList?.add?.('ivu-btn-loading')
-															el.nextSibling?.setAttribute?.('disabled', 'disabled')
-															const c = el.parentElement?.parentElement?.querySelector?.('.titleN .closeN')
-															c.classList?.add?.('disabled')
-														}
+													if (el) {
+														el.classList?.add?.('ivu-btn-loading')
+														el.nextSibling?.setAttribute?.('disabled', 'disabled')
+														const c = el.parentElement?.parentElement?.querySelector?.('.titleN .closeN')
+														c?.classList?.add?.('disabled')
+													}
 														Promise.resolve(p)
 															.then(() => {
 																loadingBoxes.set(currentId, false)

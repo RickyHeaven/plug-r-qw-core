@@ -230,14 +230,13 @@ function checkRequest(
 				counts(true)
 			}
 			let url_ = url
-			if (window && window.hasOwnProperty('g')) {
+			if (window?.g) {
 				/*所有特定缩写字母开头的地址，都会被改变加上config.js（public里的全局配置文件，在index.html引入，在打包后通过更改该文件用于不
-				 同环境的部署）里配置的地址变成绝对地址，如:
-				 config.js里配置了 window.g={mgrURL:'http://mgr.myweb.com'}
-				 请求地址 ‘/mgr/file’ 会被改变为 'http://mgr.myweb.com/file'
-				 */
+			 同环境的部署）里配置的地址变成绝对地址，如:
+			 config.js里配置了 window.g={mgrURL:'http://mgr.myweb.com'}
+			 请求地址 '/mgr/file' 会被改变为 'http://mgr.myweb.com/file'
+			 */
 
-				// @ts-ignore
 				const _g = window.g
 				let httpEnv = Object.keys(_g)
 					.filter((e) => e?.indexOf?.('URL') > -1)
