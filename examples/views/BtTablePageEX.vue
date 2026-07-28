@@ -13,7 +13,9 @@
 		TableIconBtn,
 		tablePrint,
 		tooltipManual,
-		has
+		has,
+		downloadFileByFormSubmit,
+		downloadFileWithSpin
 	} from '../../src'
 	import imgK from '../assets/testImg.png'
 	import ShowReadMe from '@/components/ShowReadMe.vue'
@@ -59,7 +61,15 @@
 		{
 			title: '文件大小',
 			minWidth: 100,
-			key: 'size'
+			key: 'size',
+			render: (_h: any, params: Record<string, any>) => {
+				const size = params.row.size
+				if (size < 1024) {
+					return _h('span', size + ' KB')
+				} else {
+					return _h('span', (size / 1024).toFixed(2) + ' MB')
+				}
+			}
 		},
 		{
 			title: '备注',
@@ -130,7 +140,7 @@
 		{
 			type: 'inputNumber',
 			key: 'size',
-			label: '文件大小',
+			label: '文件大小（kb）',
 			min: 0
 		},
 		{
@@ -187,7 +197,9 @@
 	function handleNew() {
 		if (nodeServer.value) {
 			action.value = 'new'
-			formModalRef.value.open()
+			formModalRef.value.resetForm().then(() => {
+				formModalRef.value.open()
+			})
 		} else {
 			$swal('提示', '仅在node-serve模式下可执行新增', 'info')
 		}
@@ -249,6 +261,27 @@
 				}
 			}
 		})
+	}
+
+	function handleExport() {
+		if (nodeServer.value) {
+			downloadFileByFormSubmit('/node-serve/export-excel', {}, 'post')
+		} else {
+			$swal('提示', '仅在node-serve模式下可执行导出', 'info')
+		}
+	}
+
+	async function handleExportWithSpin() {
+		if (nodeServer.value) {
+			$swal({
+				text: '为了展示蒙层效果，接口做了延时，两个导出方法执行速度并无区别',
+				onOk: () => {
+					downloadFileWithSpin('/node-serve/export-excel-slow', {}, 'post', 'btTablePage_export.xlsx')
+				}
+			})
+		} else {
+			$swal('提示', '仅在node-serve模式下可执行导出', 'info')
+		}
 	}
 
 	function messageRender(_h: any) {
@@ -337,6 +370,8 @@
 						<IconTxtBtn name="get select" icon="md-list" @click="getS" />
 						<IconTxtBtn name="新增" icon="md-add" @click="handleNew" />
 						<IconTxtBtn name="打印" icon="md-print" @click="handlePrint" />
+						<IconTxtBtn name="导出" icon="md-download" @click="handleExport" />
+						<IconTxtBtn name="导出(带蒙层)" icon="md-download" @click="handleExportWithSpin" />
 					</div>
 				</template>
 			</BtTablePage>

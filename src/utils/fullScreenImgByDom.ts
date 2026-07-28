@@ -120,6 +120,11 @@ export default function fullScreenImgByDom(this: any, src: any, index: number = 
 	})
 
 	function keyupHandler(e: any) {
+		const activeInstance = _previewInstances[_previewInstances.length - 1]
+		if (activeInstance?.child !== child) {
+			return
+		}
+
 		if (e.keyCode === 37 || e.keyCode === 38 || e.keyCode === 87 || e.keyCode === 65) {
 			//上、左、w、a
 			lastImg(arrSrc, src, imgEl, nameEl)

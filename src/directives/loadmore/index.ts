@@ -2,6 +2,11 @@
  * @description 滚动加载更多指令，常用于select下拉滚动监听
  * @author Ricky email:zhangqingcq@foxmail.com
  * @created 2023.04.27
+ *
+ * 注意：本指令从 document 查找滚动元素，而非从绑定元素向下查找。
+ * 原因是 view-design/iview 等 UI 框架的 select 开启 transfer 后，
+ * 下拉列表会被渲染到 body 下，不在绑定元素的 DOM 树内。
+ * 从 document 查找可以适配此类场景。
  */
 import type { Directive, DirectiveBinding } from 'vue'
 
@@ -12,10 +17,11 @@ interface LoadmoreElement extends HTMLElement {
 
 export default {
 	mounted(el: LoadmoreElement, binding: DirectiveBinding) {
-		let SELECT_DOM: HTMLElement | null = el
+		let SELECT_DOM: HTMLElement | null = null
 
 		if (binding.arg) {
-			SELECT_DOM = el.getElementsByClassName(binding.arg as string)?.[0] as HTMLElement
+			// 从 document 查找滚动容器，适配 transfer 模式下下拉列表被渲染到 body 的场景
+			SELECT_DOM = document.getElementsByClassName(binding.arg)?.[0] as HTMLElement | null
 		}
 
 		if (!SELECT_DOM) {

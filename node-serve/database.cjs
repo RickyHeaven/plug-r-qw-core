@@ -1,11 +1,73 @@
 /**
- * @description 虚拟微型数据库
+ * @description 虚拟微型数据库（JSON文件持久化）
  * @author Ricky zhangqingcq@foxmail.com
  * @created 2021.07.02
  */
 
-let _data = {}
-let idCount = {}
+const fs = require('fs')
+const path = require('path')
+
+const DATA_FILE = path.join(__dirname, 'data', 'database.json')
+
+/**
+ * 从文件加载数据
+ */
+function loadData() {
+	try {
+		if (fs.existsSync(DATA_FILE)) {
+			const content = fs.readFileSync(DATA_FILE, 'utf-8')
+			const parsed = JSON.parse(content)
+			return {
+				data: parsed.data || {},
+				idCount: parsed.idCount || {}
+			}
+		}
+	} catch (e) {
+		console.error('加载数据库文件失败:', e)
+	}
+	return { data: {}, idCount: {} }
+}
+
+/**
+ * 保存数据到文件
+ */
+function saveData() {
+	try {
+		const dir = path.dirname(DATA_FILE)
+		if (!fs.existsSync(dir)) {
+			fs.mkdirSync(dir, { recursive: true })
+		}
+		const storage = {
+			data: _data,
+			idCount: idCount
+		}
+		fs.writeFileSync(DATA_FILE, JSON.stringify(storage, null, 2), 'utf-8')
+	} catch (e) {
+		console.error('保存数据库文件失败:', e)
+	}
+}
+
+let _data = loadData().data
+let idCount = loadData().idCount
+
+// 初始化 idCount（兼容旧数据格式：没有 idCount 的情况）
+for (let table in _data) {
+	if (!idCount[table] && _data[table].length > 0) {
+		idCount[table] = Math.max(..._data[table].map((e) => e.id))
+	}
+}
+
+/**
+ * 获取下一个 ID
+ * @param {String} table 表名
+ * @returns {Number} 下一个 ID
+ */
+function getNextId(table) {
+	if (!idCount[table]) {
+		idCount[table] = 0
+	}
+	return ++idCount[table]
+}
 
 /**
  * 增
@@ -23,6 +85,7 @@ exports._save = function (table, data) {
 	})
 	b.reverse()
 	_data[table].unshift(...b)
+	saveData()
 	return true
 }
 
@@ -38,6 +101,7 @@ exports._delete = function (table, condition) {
 		return false
 	}
 	_data[table] = _data[table].filter((e) => !condition(e))
+	saveData()
 	return true
 }
 /**
@@ -79,6 +143,7 @@ exports._edit = function (table, data) {
 	for (let i = 0, len = _data[table].length; i < len; i++) {
 		if (_data[table][i].id === data.id) {
 			_data[table][i] = data
+			saveData()
 			return true
 		}
 	}

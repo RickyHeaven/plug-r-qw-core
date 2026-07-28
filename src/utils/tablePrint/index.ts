@@ -3,13 +3,17 @@ import PrintModal from './PrintModal.vue'
 import { myTypeof } from '../globalFunc'
 
 let _router: any = null
+let _printStyleEl: HTMLStyleElement | null = null
 
 function addStyle() {
 	const root = document.documentElement
 	root.style.setProperty('overflow', 'auto')
-	const style = document.createElement('style')
-	style.innerHTML = `body,div[data-v-app]{height:100% !important}`
-	document.head.appendChild(style)
+	
+	if (!_printStyleEl) {
+		_printStyleEl = document.createElement('style')
+		_printStyleEl.innerHTML = `body,div[data-v-app]{height:100% !important}`
+		document.head.appendChild(_printStyleEl)
+	}
 }
 
 function init(router: any) {

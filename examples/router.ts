@@ -169,6 +169,14 @@ const router = createRouter({
 			meta: {
 				desc: '全屏图片预览（Modal方式）'
 			}
+		},
+		{
+			path: '/editorPro',
+			name: 'EditorPro',
+			component: () => import('@/views/EditorProEX.vue'),
+			meta: {
+				desc: '富文本编辑器'
+			}
 		}
 	]
 })

@@ -49,7 +49,15 @@ export interface plugROption {
 	[k: keyof any]: any
 }
 
+let isInstalled = false
+
 export const install = function (app: App, options: plugROption = {}) {
+	if (isInstalled) {
+		console.warn('plug-r-qw 已经安装过，请勿重复调用 install')
+		return
+	}
+	isInstalled = true
+	
 	outFunc.$fetch.init(options.useStore || options.store, app)
 
 	JsonViewerPlugin.install(app)

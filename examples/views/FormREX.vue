@@ -641,8 +641,10 @@
 			label: '位置',
 			key: 'lng',
 			key2: 'lat',
+			key3: 'locationName',
 			defaultVal: 106.585836,
 			defaultVal2: 29.564123,
+			defaultVal3: '朝天门(地铁站)',
 			info: 'inputMap, 该示例展示功能：地图，收集地点经纬度，详细说明见InputMap组件的文档'
 		},
 		{

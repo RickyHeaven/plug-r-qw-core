@@ -5,14 +5,14 @@
  */
 
 const express = require('express')
-const formRData = require('./data/formR.cjs')
 const { _save, _delete, _get, _edit } = require('./database.cjs')
 
 const router = express.Router()
 
 router.get('/people', function (req, res) {
 	const q = req.query
-	const t = formRData.people.data.filter((e) => {
+	const result = _get('people', 1, -1)
+	const t = result.data.filter((e) => {
 		let a = true
 		for (let k in q) {
 			/*这里用了隐式转换，不能全等*/

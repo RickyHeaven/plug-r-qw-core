@@ -252,17 +252,25 @@ export function decimalDigitsLimit(val: number | string, num: number = 2): strin
 }
 
 /*文件导出，调用后端接口以form表单提交数据下载文件*/
+let _downloadForm: HTMLFormElement | null = null
+
 export function downloadFileByFormSubmit(url: string, data: PlainObject = {}, method: string = 'get'): void {
-	let form = document.createElement('form')
 	let body = document.getElementsByTagName('body')[0]
 	if (!body) {
 		console.error('document.body 不存在，无法执行文件下载')
 		return
 	}
-	body.appendChild(form)
-	form.setAttribute('style', 'display:none')
-	form.setAttribute('target', '')
-	form.setAttribute('method', method)
+	
+	if (!_downloadForm) {
+		_downloadForm = document.createElement('form')
+		_downloadForm.setAttribute('style', 'display:none')
+		_downloadForm.setAttribute('target', '')
+		body.appendChild(_downloadForm)
+	}
+	
+	_downloadForm.innerHTML = ''
+	_downloadForm.setAttribute('method', method)
+	
 	let _url = url
 	if (window?.g) {
 		/*所有特定缩写字母开头的地址，都会被改变加上config.js（public里的全局配置文件，在index.html引入，在打包后通过更改该文件用于不
@@ -282,7 +290,7 @@ export function downloadFileByFormSubmit(url: string, data: PlainObject = {}, me
 			}
 		}
 	}
-	form.setAttribute('action', _url)
+	_downloadForm.setAttribute('action', _url)
 
 	if (isPlainObject(data)) {
 		for (let key in data) {
@@ -291,17 +299,11 @@ export function downloadFileByFormSubmit(url: string, data: PlainObject = {}, me
 				input.setAttribute('type', 'hidden')
 				input.setAttribute('name', key)
 				input.setAttribute('value', data[key])
-				form.appendChild(input)
+				_downloadForm.appendChild(input)
 			}
 		}
 
-		form.submit()
-
-		let ta: any = setTimeout(() => {
-			body.removeChild(form)
-			clearTimeout(ta)
-			ta = null
-		}, 8000)
+		_downloadForm.submit()
 	} else {
 		console.error('请求数据格式有误，无法下载文件')
 	}

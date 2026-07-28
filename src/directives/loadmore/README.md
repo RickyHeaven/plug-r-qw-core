@@ -36,7 +36,7 @@ function loadMore() {
 
 ### 指定滚动容器
 
-可以通过指令参数传递 class 来指定滚动容器，**会从绑定元素内部查找**：
+可以通过指令参数传递 CSS 选择器来指定滚动容器，**会从 document 中查找**：
 
 ```vue
 <script setup lang="ts">
@@ -48,14 +48,19 @@ function loadMore() {
 </script>
 
 <template>
-  <!-- 从当前 div 内部查找 .my-select 作为滚动容器 -->
-  <div v-loadmore:my-select="loadMore">
+  <!-- 从 document 中查找 .my-select 作为滚动容器 -->
+  <div v-loadmore:.my-select="loadMore">
     <select class="my-select">
       <option v-for="item in options" :key="item.value">{{ item.label }}</option>
     </select>
   </div>
 </template>
 ```
+
+> **为什么从 document 查找？**
+> 
+> view-design/iview 等 UI 框架的 select 开启 `transfer` 属性后，下拉列表会被渲染到 `<body>` 下，不在绑定元素的 DOM 树内。
+> 从 document 查找可以适配此类场景，确保指令能正确绑定到实际的滚动容器。
 
 ## API
 

@@ -92,6 +92,7 @@
     "@vue/tsconfig": "^0.7.0",
     "@zhangqingcq/view-ui-plus-resolver": "^0.0.1",
     "del": "^6.1.1",
+    "exceljs": "^4.4.0",
     "express": "^4.18.2",
     "github-markdown-css": "^5.2.0",
     "gulp": "^4.0.2",

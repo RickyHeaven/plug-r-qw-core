@@ -5,9 +5,9 @@
  */
 
 const express = require('express')
-const init = require('./init.cjs')
 const router = require('./router.cjs')
 const uploadRouter = require('./upload.cjs')
+const exportRouter = require('./export.cjs')
 
 const app = express()
 
@@ -18,8 +18,6 @@ app.listen(PORT, () => {
 })
 
 app.use(express.static('public'))
-
-init()
 
 app.use(function (req, res, next) {
 	console.log(
@@ -41,4 +39,5 @@ app.use(function (req, res, next) {
 })
 
 app.use(uploadRouter)
+app.use(exportRouter)
 app.use(router)

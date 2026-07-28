@@ -64,6 +64,13 @@
 
 - 定制样式（编辑区域、预览层,解决z-index导致的穿透等）：编辑器容器class为：`editor-pro-root` ，工具栏class为：`editor-pro-toolbar`，编辑区class为`editor-pro-editor`，预览层id为`editor-preview`,直接另外写新样式覆写原有样式即可。
 
+- 全屏功能 z-index 说明：编辑器全屏时使用固定定位，`.w-e-full-screen-container` 元素的 `z-index` 默认设为 `10`。由于实际项目中页面元素的 `z-index` 层级关系复杂，该值可能无法满足所有场景（即 z-index 困境）。如当前值不满足需求，用户可自行编写样式强制覆盖：
+  ```css
+  .w-e-full-screen-container {
+  	z-index: 9999 !important;
+  }
+  ```
+
 - 编辑器工具栏菜单key:
   ```json
   [

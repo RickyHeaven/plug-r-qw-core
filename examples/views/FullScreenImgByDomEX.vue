@@ -36,6 +36,7 @@
 		img {
 			display: inline-block;
 			height: 80px;
+
 			& + img {
 				margin-left: 20px;
 			}
