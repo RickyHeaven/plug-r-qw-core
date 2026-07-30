@@ -16,13 +16,6 @@
         "id": 84
       },
       {
-        "name": "向日葵",
-        "size": 304,
-        "mimeType": "bmp",
-        "remark": "测试新增、编辑",
-        "id": 83
-      },
-      {
         "name": "foot_nav3.png",
         "size": 1058,
         "mimeType": "image/png",
@@ -63,13 +56,6 @@
         "mimeType": "text/html",
         "extension": ".html",
         "id": 76
-      },
-      {
-        "name": "文章正文",
-        "size": 353,
-        "mimeType": "text/html",
-        "extension": ".html",
-        "id": 75
       },
       {
         "name": "文章正文",
@@ -762,11 +748,31 @@
         "id": 5
       }
     ],
-    "transfer-box-added": []
+    "transfer-box-added": [
+      {
+        "name": "文章正文",
+        "size": 353,
+        "mimeType": "text/html",
+        "extension": ".html",
+        "id": null,
+        "btKey": "bt-8",
+        "btChecked": false
+      },
+      {
+        "name": "向日葵",
+        "size": 304,
+        "mimeType": "bmp",
+        "remark": "测试新增、编辑",
+        "id": null,
+        "btKey": "bt-2",
+        "btChecked": false
+      }
+    ]
   },
   "idCount": {
     "bt-table-page": 85,
     "select-scroll-more": 16,
-    "people": 5
+    "people": 5,
+    "transfer-box-added": null
   }
 }

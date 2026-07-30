@@ -16,7 +16,8 @@
 			path: e.path,
 			desc: e.meta.desc
 		}))
-		.filter((e) => e.name !== 'Login' && e.name !== 'tablePrint')
+		.filter((e) => e.name !== 'Login' && e.name !== 'tablePrint' && e.name)
+		.sort((a, b) => (a.name as string).localeCompare(b.name as string, undefined, { sensitivity: 'base' }))
 </script>
 
 <template>

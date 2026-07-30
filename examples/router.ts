@@ -14,11 +14,6 @@ const router = createRouter({
 			redirect: '/fetch'
 		},
 		{
-			path: '/login',
-			name: 'Login',
-			component: () => import('@/views/Login.vue')
-		},
-		{
 			path: '/fetch',
 			name: '$fetch',
 			component: () => import('@/views/FetchEX.vue'),
@@ -32,6 +27,22 @@ const router = createRouter({
 			component: Swal,
 			meta: {
 				desc: '提示框'
+			}
+		},
+		{
+			path: '/alCascaderMC',
+			name: 'AlCascaderMC',
+			component: () => import('@/views/AlCascaderMCEX.vue'),
+			meta: {
+				desc: '行政区域级联'
+			}
+		},
+		{
+			path: '/asyncCascader',
+			name: 'AsyncCascader',
+			component: () => import('@/views/AsyncCascaderEX.vue'),
+			meta: {
+				desc: '远程级联选择器'
 			}
 		},
 		{
@@ -51,75 +62,19 @@ const router = createRouter({
 			}
 		},
 		{
-			path: '/tableSetting',
-			name: 'TableSetting',
-			component: () => import('@/views/TableSettingEX.vue'),
+			path: '/domPrint',
+			name: 'DomPrint',
+			component: () => import('@/views/DomPrintEX.vue'),
 			meta: {
-				desc: '表格列设置'
+				desc: '网页Dom打印'
 			}
 		},
 		{
-			path: '/fullPop',
-			name: 'FullPop',
-			component: () => import('@/views/FullPopEX.vue'),
+			path: '/editorPro',
+			name: 'EditorPro',
+			component: () => import('@/views/EditorProEX.vue'),
 			meta: {
-				desc: '全屏弹框'
-			}
-		},
-		{
-			path: '/messageBox',
-			name: 'messageBox',
-			component: () => import('@/views/MessageBoxEX.vue'),
-			meta: {
-				desc: '对话框'
-			}
-		},
-		{
-			path: '/page404',
-			name: 'Page404',
-			component: () => import('@/views/Page404EX.vue'),
-			meta: {
-				desc: '404页面'
-			}
-		},
-		{
-			path: '/inputMap',
-			name: 'InputMap',
-			component: () => import('@/views/InputMapEX.vue'),
-			meta: {
-				desc: '地点选择'
-			}
-		},
-		{
-			path: '/sichuanCuisine/combo/sideMenu',
-			name: 'SideMenu',
-			component: () => import('@/views/SideMenuEX.vue'),
-			meta: {
-				desc: '左侧菜单'
-			}
-		},
-		{
-			path: '/sichuanCuisine/combo/twiceCookedPork/sideMenuPro',
-			name: 'SideMenuPro',
-			component: () => import('@/views/SideMenuProEX.vue'),
-			meta: {
-				desc: '左侧菜单Pro'
-			}
-		},
-		{
-			path: '/uploadGroup',
-			name: 'UploadGroup',
-			component: () => import('@/views/UploadGroupEX.vue'),
-			meta: {
-				desc: '上传文件'
-			}
-		},
-		{
-			path: '/selectScrollMore',
-			name: 'SelectScrollMore',
-			component: () => import('@/views/SelectScrollMoreEX.vue'),
-			meta: {
-				desc: '下拉框-下拉加载更多选项'
+				desc: '富文本编辑器'
 			}
 		},
 		{
@@ -139,19 +94,11 @@ const router = createRouter({
 			}
 		},
 		{
-			path: '/selectInput',
-			name: 'SelectInput',
-			component: () => import('@/views/SelectInputEX.vue'),
+			path: '/fullPop',
+			name: 'FullPop',
+			component: () => import('@/views/FullPopEX.vue'),
 			meta: {
-				desc: '可换label输入框'
-			}
-		},
-		{
-			path: '/domPrint',
-			name: 'DomPrint',
-			component: () => import('@/views/DomPrintEX.vue'),
-			meta: {
-				desc: '网页Dom打印'
+				desc: '全屏弹框'
 			}
 		},
 		{
@@ -171,11 +118,104 @@ const router = createRouter({
 			}
 		},
 		{
-			path: '/editorPro',
-			name: 'EditorPro',
-			component: () => import('@/views/EditorProEX.vue'),
+			path: '/iconTxtBtn',
+			name: 'IconTxtBtn',
+			component: () => import('@/views/IconTxtBtnEX.vue'),
 			meta: {
-				desc: '富文本编辑器'
+				desc: '图标文字按钮'
+			}
+		},
+		{
+			path: '/inputMap',
+			name: 'InputMap',
+			component: () => import('@/views/InputMapEX.vue'),
+			meta: {
+				desc: '地点选择'
+			}
+		},
+		{
+			path: '/login',
+			name: 'Login',
+			component: () => import('@/views/Login.vue')
+		},
+		{
+			path: '/messageBox',
+			name: 'messageBox',
+			component: () => import('@/views/MessageBoxEX.vue'),
+			meta: {
+				desc: '对话框'
+			}
+		},
+		{
+			path: '/monthRange',
+			name: 'MonthRange',
+			component: () => import('@/views/MonthRangeEX.vue'),
+			meta: {
+				desc: '月份区间选择器'
+			}
+		},
+		{
+			path: '/page404',
+			name: 'Page404',
+			component: () => import('@/views/Page404EX.vue'),
+			meta: {
+				desc: '404页面'
+			}
+		},
+		{
+			path: '/selectInput',
+			name: 'SelectInput',
+			component: () => import('@/views/SelectInputEX.vue'),
+			meta: {
+				desc: '可换label输入框'
+			}
+		},
+		{
+			path: '/selectScrollMore',
+			name: 'SelectScrollMore',
+			component: () => import('@/views/SelectScrollMoreEX.vue'),
+			meta: {
+				desc: '下拉框-下拉加载更多选项'
+			}
+		},
+		{
+			path: '/sichuanCuisine/combo/sideMenu',
+			name: 'SideMenu',
+			component: () => import('@/views/SideMenuEX.vue'),
+			meta: {
+				desc: '左侧菜单'
+			}
+		},
+		{
+			path: '/sichuanCuisine/combo/twiceCookedPork/sideMenuPro',
+			name: 'SideMenuPro',
+			component: () => import('@/views/SideMenuProEX.vue'),
+			meta: {
+				desc: '左侧菜单Pro'
+			}
+		},
+		{
+			path: '/tableSetting',
+			name: 'TableSetting',
+			component: () => import('@/views/TableSettingEX.vue'),
+			meta: {
+				desc: '表格列设置'
+			}
+		},
+		{
+			path: '/transferBox',
+			name: 'TransferBox',
+			component: () => import('@/views/TransferBoxEX.vue'),
+			meta: {
+				desc: '穿梭框'
+			}
+		},
+		{
+			path: '/uploadGroup',
+			name: 'UploadGroup',
+			component: () => import('@/views/UploadGroupEX.vue'),
+			meta: {
+				desc: '上传文件'
 			}
 		}
 	]
