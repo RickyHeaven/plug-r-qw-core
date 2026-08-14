@@ -17,9 +17,9 @@ export default function $swalConfirm(
 ) {
 	const T = (...arg: Parameters<typeof t>) => t.apply(this, arg)
 	$swal.call(this, {
-		title: title || T('r.info.title'),
-		text: text || T('r.info.text'),
-		icon: icon || 'warning',
+		title: title === null ? T('r.info.title') : title,
+		text: text === null ? T('r.info.text') : text,
+		icon: icon === null ? 'warning' : icon,
 		onOk: onOk,
 		buttons: [T('r.cancel')],
 		closeOnClickOutside: closeOnClickOutside

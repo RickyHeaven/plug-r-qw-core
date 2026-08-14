@@ -29,16 +29,19 @@
 		{
 			title: '文件类型',
 			key: 'mimeType',
+			minWidth: 100,
 			align: 'center'
 		},
 		{
 			title: '文件大小',
 			key: 'size',
+			minWidth: 90,
 			align: 'center'
 		},
 		{
 			title: '备注',
 			key: 'remark',
+			minWidth: 100,
 			align: 'center'
 		}
 	]
