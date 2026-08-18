@@ -300,6 +300,7 @@
 			:max-size="props.item.maxSize || 0"
 			:show-img="Boolean(props.item.showImg)"
 			:length="props.item.length || 0"
+			:multiple="Boolean(props.item.multiple)"
 			:disabled="Boolean(props.item.disabled) || props.disabled"
 			:with-credentials="props.item.withCredentials !== false"
 			@on-file-id-change="reValidateAndChangeHandle($event, props.item)"
