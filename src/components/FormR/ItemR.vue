@@ -158,18 +158,18 @@
 			</template>
 		</Input>
 		<!--下拉框-->
-		<Select
-			v-else-if="props.item.type === 'select'"
-			v-model="tempKeys[props.item.tempKey]"
-			:style="itemStyle"
-			:filterable="props.item.filterable === true || props.item.filterable === false ? props.item.filterable : false"
-			:disabled="Boolean(props.item.disabled) || props.disabled"
-			:multiple="Boolean(props.item.multiple)"
-			:placeholder="props.item.placeholder || t('r.pSelect')"
-			@on-change="itemChange($event, props.item)"
-			transfer
-			:clearable="props.item.clearable !== false"
-		>
+	<Select
+		v-else-if="props.item.type === 'select'"
+		v-model="tempKeys[props.item.tempKey]"
+		:style="itemStyle"
+		:filterable="props.item.filterable === true || props.item.filterable === false ? props.item.filterable : false"
+		:disabled="Boolean(props.item.disabled) || props.disabled"
+		:multiple="Boolean(props.item.multiple)"
+		:placeholder="props.item.placeholder || t('r.pSelect')"
+		@on-change="reValidateAndChangeHandle($event, props.item)"
+		transfer
+		:clearable="props.item.clearable !== false"
+	>
 			<Option
 				v-for="(optionItem, i) in props.item.options"
 				:value="optionItem.val"
