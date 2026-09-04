@@ -86,6 +86,11 @@
 		const el = document.getElementsByClassName(transferId)[0]
 		el?.addEventListener?.('click', getOptions, true)
 	})
+
+	onUnmounted(() => {
+		const el = document.getElementsByClassName(transferId)[0]
+		el?.removeEventListener?.('click', getOptions, true)
+	})
 </script>
 
 <template>

@@ -27,6 +27,11 @@
 	)
 
 	const formRRef = ref()
+	const handleKeyup = (e: any) => {
+		if (e?.keyCode === 13) {
+			submit()
+		}
+	}
 
 	const formDataC = computed(() => {
 		if (Array.isArray(props.formData[0])) {
@@ -121,12 +126,14 @@
 	onMounted(() => {
 		const el = formRRef.value.$el
 		if (el?.parentNode) {
-			el.parentNode.addEventListener('keyup', (e: any) => {
-				if (e?.keyCode === 13) {
-					//回车
-					submit()
-				}
-			})
+			el.parentNode.addEventListener('keyup', handleKeyup)
+		}
+	})
+
+	onUnmounted(() => {
+		const el = formRRef.value?.$el
+		if (el?.parentNode) {
+			el.parentNode.removeEventListener('keyup', handleKeyup)
 		}
 	})
 

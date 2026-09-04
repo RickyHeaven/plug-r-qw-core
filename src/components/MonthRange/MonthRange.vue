@@ -61,20 +61,38 @@
 	)
 
 	const mPickerRef = ref()
+	const suffixEl = ref<HTMLElement | null>(null)
+
+	const handleMouseOver = () => {
+		mouseOver.value = true
+	}
+
+	const handleMouseOut = () => {
+		mouseOver.value = false
+	}
+
+	const handleClick = (e: any) => {
+		if (!props.disabled && (valueA.value || valueB.value)) {
+			e?.stopPropagation?.()
+			clear()
+		}
+	}
 
 	onMounted(() => {
-		mPickerRef.value.querySelector('.aRoot .ivu-input-suffix').addEventListener('mouseover', () => {
-			mouseOver.value = true
-		})
-		mPickerRef.value.querySelector('.aRoot .ivu-input-suffix').addEventListener('mouseout', () => {
-			mouseOver.value = false
-		})
-		mPickerRef.value.querySelector('.aRoot .ivu-input-suffix').addEventListener('click', (e: any) => {
-			if (!props.disabled && (valueA.value || valueB.value)) {
-				e?.stopPropagation?.()
-				clear()
-			}
-		})
+		suffixEl.value = mPickerRef.value.querySelector('.aRoot .ivu-input-suffix')
+		if (suffixEl.value) {
+			suffixEl.value.addEventListener('mouseover', handleMouseOver)
+			suffixEl.value.addEventListener('mouseout', handleMouseOut)
+			suffixEl.value.addEventListener('click', handleClick)
+		}
+	})
+
+	onUnmounted(() => {
+		if (suffixEl.value) {
+			suffixEl.value.removeEventListener('mouseover', handleMouseOver)
+			suffixEl.value.removeEventListener('mouseout', handleMouseOut)
+			suffixEl.value.removeEventListener('click', handleClick)
+		}
 	})
 
 	function focus() {

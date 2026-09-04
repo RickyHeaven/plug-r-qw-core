@@ -117,6 +117,13 @@
 		document.addEventListener('mousemove', handleDrag)
 		document.addEventListener('mouseup', dragEnd)
 	})
+
+	onUnmounted(() => {
+		document.removeEventListener('click', wallClick)
+		document.removeEventListener('mousemove', handleDrag)
+		document.removeEventListener('mouseup', dragEnd)
+	})
+
 	init()
 </script>
 
