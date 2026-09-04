@@ -532,6 +532,7 @@
 	})
 
 	onBeforeUnmount(() => {
+		debounceResize.cancel()
 		if (fixedTable.value) {
 			window.removeEventListener('resize', debounceResize)
 		}

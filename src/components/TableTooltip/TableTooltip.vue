@@ -40,6 +40,7 @@
 	onUpdated(getSize)
 
 	onUnmounted(() => {
+		debounceFunc?.cancel()
 		window.removeEventListener('resize', debounceFunc)
 	})
 </script>

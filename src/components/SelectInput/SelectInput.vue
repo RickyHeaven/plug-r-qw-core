@@ -82,6 +82,10 @@
 	const handleChange = debounce((data) => {
 		emit('on-change', data)
 	}, 500)
+
+	onUnmounted(() => {
+		handleChange.cancel()
+	})
 </script>
 
 <template>

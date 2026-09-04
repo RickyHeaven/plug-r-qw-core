@@ -179,6 +179,10 @@
 		}
 	}, 600)
 
+	onUnmounted(() => {
+		getOption.cancel()
+	})
+
 	function loadMore() {
 		/*私有，不可调用*/
 		if (urlChanged) {
