@@ -5,6 +5,7 @@
 <script lang="ts" setup>
 	import { debounce } from 'lodash-es'
 	import t from '../../locale/i18nSFC'
+	import { useComposition } from '../../utils/useComposition'
 
 	const emit = defineEmits(['update:modelValue', 'on-change'])
 	const props = withDefaults(
@@ -31,6 +32,8 @@
 			disabled: false
 		}
 	)
+
+	const { onCompositionStart, onCompositionEnd, handleChange } = useComposition()
 
 	const selectVal = computed({
 		get() {
@@ -71,20 +74,22 @@
 	}))
 
 	function inputChange(e: Record<string, any>) {
-		if (e?.target && e.target.value !== undefined) {
-			handleChange({
-				key: selectVal.value,
-				val: e.target.value
-			})
-		}
+		handleChange(() => {
+			if (e?.target && e.target.value !== undefined) {
+				handleEmitChange({
+					key: selectVal.value,
+					val: e.target.value
+				})
+			}
+		})
 	}
 
-	const handleChange = debounce((data) => {
+	const handleEmitChange = debounce((data) => {
 		emit('on-change', data)
 	}, 500)
 
 	onUnmounted(() => {
-		handleChange.cancel()
+		handleEmitChange.cancel()
 	})
 </script>
 
@@ -105,6 +110,8 @@
 			:style="inputStyle"
 			:clearable="props.clearable"
 			:disabled="Boolean(props.disabled)"
+			@compositionstart="onCompositionStart"
+			@compositionend="onCompositionEnd"
 			@on-change="inputChange"
 		/>
 	</div>

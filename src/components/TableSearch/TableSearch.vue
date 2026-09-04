@@ -15,6 +15,7 @@
 
 	import t from '../../locale/i18nSFC'
 	import { setTimeout } from '../../utils/timer'
+	import { useComposition } from '../../utils/useComposition'
 
 	const emit = defineEmits(['update:modelValue', 'on-toggle', 'on-search'])
 	const props = withDefaults(
@@ -41,6 +42,7 @@
 	)
 
 	let isDebounce = false
+	const { onCompositionStart, onCompositionEnd, handleSearch: handleSearchWithIME } = useComposition()
 	const value = computed({
 		get() {
 			return props.modelValue
@@ -60,13 +62,15 @@
 	const iconL = computed(() => (openX.value ? 'ios-arrow-up' : 'ios-arrow-down'))
 
 	function onSearch() {
-		if (!isDebounce) {
-			isDebounce = true
-			emit('on-search', value.value)
-			setTimeout(() => {
-				isDebounce = false
-			}, 2000)
-		}
+		handleSearchWithIME(() => {
+			if (!isDebounce) {
+				isDebounce = true
+				emit('on-search', value.value)
+				setTimeout(() => {
+					isDebounce = false
+				}, 2000)
+			}
+		})
 	}
 </script>
 
@@ -80,6 +84,8 @@
 				v-model="value"
 				:style="{ width: props.width }"
 				search
+				@compositionstart="onCompositionStart"
+				@compositionend="onCompositionEnd"
 				@on-search="onSearch"
 				class="searchInputC"
 				:placeholder="props.placeholder || t('r.pInput')"

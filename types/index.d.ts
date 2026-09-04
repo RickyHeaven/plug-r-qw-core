@@ -1893,6 +1893,28 @@ export declare function toLine(name: string): string;
  showUploadList: boolean;
  }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>;
 
+ /**
+  * IME Composition 输入法组合状态管理工具
+  * 用于处理中文等输入法的 compositionstart/compositionend 事件
+  * 避免在输入法组合过程中触发不必要的 change/search 事件
+  *
+  * @example
+  * const { isComposing, onCompositionStart, onCompositionEnd, handleChange } = useComposition()
+  *
+  * <Input
+  *   @compositionstart="onCompositionStart"
+  *   @compositionend="onCompositionEnd"
+  *   @on-change="handleChange(() => { 你的实际处理逻辑 })
+  * />
+  */
+ export declare function useComposition(): {
+     isComposing: globalThis.Ref<boolean, boolean>;
+     onCompositionStart: () => void;
+     onCompositionEnd: () => void;
+     handleChange: (callback: () => void) => void;
+     handleSearch: (callback: () => void) => void;
+ };
+
  declare function validate(): void;
 
  declare function validate_2(): void;

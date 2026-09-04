@@ -8,6 +8,7 @@
 	import $fetch from '../../utils/fetch'
 	import { Message } from 'view-ui-plus'
 	import t from '../../locale/i18nSFC'
+	import { useComposition } from '../../utils/useComposition'
 
 	const emit = defineEmits(['update:modelValue', 'on-change', 'update-option-finish'])
 	const props = withDefaults(
@@ -45,6 +46,7 @@
 	let isFresh = true
 	let urlChanged = false
 	const transferClass = 'scm' + Math.random()
+	const { onCompositionStart, onCompositionEnd, handleChange } = useComposition()
 
 	const placeholderT = computed(() => {
 		return searchStr.value ? t('r.searchFor') + searchStr.value : props.placeholder || t('r.pInput')
@@ -110,7 +112,19 @@
 	function addInputEventListener() {
 		/*私有，不可调用*/
 		const inputEl = selectScrollSourceRef.value.$el.querySelector('.ivu-select-input[type="text"]')
+		inputEl.addEventListener('compositionstart', onCompositionStart)
+		inputEl.addEventListener('compositionend', onCompositionEnd)
 		inputEl.addEventListener('keyup', getOption)
+	}
+
+	function removeInputEventListener() {
+		/*私有，不可调用*/
+		const inputEl = selectScrollSourceRef.value?.$el?.querySelector('.ivu-select-input[type="text"]')
+		if (inputEl) {
+			inputEl.removeEventListener('compositionstart', onCompositionStart)
+			inputEl.removeEventListener('compositionend', onCompositionEnd)
+			inputEl.removeEventListener('keyup', getOption)
+		}
 	}
 
 	function reset() {
@@ -139,48 +153,51 @@
 
 	const getOption = debounce(function (e: any) {
 		/*私有，不可调用*/
-		const val = e?.target?.value
-		if (!isSelect(val)) {
-			if (isValidValue(val)) {
-				if (urlChanged) {
-					reset()
-				} else {
-					if (isEmpty(historyData)) {
-						historyData.current = current.value
-						historyData.pages = pages
-						historyData.options = cloneDeep(options.value)
+		handleChange(() => {
+			const val = e?.target?.value
+			if (!isSelect(val)) {
+				if (isValidValue(val)) {
+					if (urlChanged) {
+						reset()
+					} else {
+						if (isEmpty(historyData)) {
+							historyData.current = current.value
+							historyData.pages = pages
+							historyData.options = cloneDeep(options.value)
+						}
+						if (isValidValue(valueT.value)) {
+							valueT.value = ''
+						}
 					}
-					if (isValidValue(valueT.value)) {
-						valueT.value = ''
-					}
-				}
-				searchStr.value = String(val)
-				options.value = []
-				current.value = 1
-				isFresh = true
-				getData()
-			} else {
-				if (urlChanged) {
-					reset()
+					searchStr.value = String(val)
+					options.value = []
+					current.value = 1
+					isFresh = true
 					getData()
 				} else {
-					valueT.value = ''
-					searchStr.value = ''
-					if (historyData.current) {
-						current.value = historyData.current
-						pages = historyData.pages
-						options.value = cloneDeep(historyData.options)
-						historyData = {}
-					} else {
+					if (urlChanged) {
+						reset()
 						getData()
+					} else {
+						valueT.value = ''
+						searchStr.value = ''
+						if (historyData.current) {
+							current.value = historyData.current
+							pages = historyData.pages
+							options.value = cloneDeep(historyData.options)
+							historyData = {}
+						} else {
+							getData()
+						}
 					}
 				}
 			}
-		}
+		})
 	}, 600)
 
 	onUnmounted(() => {
 		getOption.cancel()
+		removeInputEventListener()
 	})
 
 	function loadMore() {

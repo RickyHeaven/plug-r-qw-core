@@ -9,6 +9,7 @@
 	import AMapLoader from '@amap/amap-jsapi-loader'
 	import { get } from '../../utils/amap'
 	import { Input } from 'view-ui-plus'
+	import { useComposition } from '../../utils/useComposition'
 
 	const emit = defineEmits(['update:modelValue', 'on-change'])
 	const props = withDefaults(
@@ -123,6 +124,7 @@
 	const mapInputRef = ref<InstanceType<typeof Input> | null>(null)
 	const mapRef = ref<HTMLDivElement | null>(null)
 	let infoWindow: Record<string, any> | null
+	const { onCompositionStart, onCompositionEnd, handleSearch: handleSearchWithIME } = useComposition()
 
 	function checkHeight() {
 		if ((mapRef.value && mapRef.value.clientHeight < 10) || !mapRef.value) {
@@ -166,39 +168,43 @@
 	}
 
 	function handleSearch() {
-		if (!searchText.value.trim()) return
-		if (props.showMap && !Map) {
-			console.warn('地图未就绪，请稍后重试')
-			return
-		}
-
-		AMapLoader.load({
-			key: get('key'),
-			version: '2.0',
-			plugins: ['AMap.AutoComplete']
-		}).then((_map) => {
-			if (!AutoComplete) {
-				AutoComplete = new _map.Autocomplete({
-					city: '全国',
-					type: ''
-				})
+		handleSearchWithIME(() => {
+			if (!searchText.value.trim()) return
+			if (props.showMap && !Map) {
+				console.warn('地图未就绪，请稍后重试')
+				return
 			}
 
-			AutoComplete.search(searchText.value, (status: string, result: Record<string, any>) => {
-				if (status === 'complete' && result.info === 'OK') {
-					addressList.value = result.tips
-						.slice(0, 10)
-						.filter((item: Record<string, any>) => item.name && (item.address || (item.location?.lng && item.location?.lat)))
-						.map((item: Record<string, any>) => ({
-							name: item.name,
-							address: item.address,
-							lng: item.location?.lng,
-							lat: item.location?.lat
-						}))
-				} else {
-					addressList.value = []
-					console.warn('地址搜索失败', result)
+			AMapLoader.load({
+				key: get('key'),
+				version: '2.0',
+				plugins: ['AMap.AutoComplete']
+			}).then((_map) => {
+				if (!AutoComplete) {
+					AutoComplete = new _map.Autocomplete({
+						city: '全国',
+						type: ''
+					})
 				}
+
+				AutoComplete.search(searchText.value, (status: string, result: Record<string, any>) => {
+					if (status === 'complete' && result.info === 'OK') {
+						addressList.value = result.tips
+							.slice(0, 10)
+							.filter(
+								(item: Record<string, any>) => item.name && (item.address || (item.location?.lng && item.location?.lat))
+							)
+							.map((item: Record<string, any>) => ({
+								name: item.name,
+								address: item.address,
+								lng: item.location?.lng,
+								lat: item.location?.lat
+							}))
+					} else {
+						addressList.value = []
+						console.warn('地址搜索失败', result)
+					}
+				})
 			})
 		})
 	}
@@ -346,18 +352,15 @@
 				:disabled="props.disabled"
 				search
 				enter-button
+				@compositionstart="onCompositionStart"
+				@compositionend="onCompositionEnd"
 				@on-enter="handleSearch"
 				@on-search="handleSearch"
 			/>
 
 			<div v-show="addressList.length > 0" class="addressListWrap">
 				<div class="addressList">
-					<div
-						v-for="(item, index) in addressList"
-						:key="index"
-						class="addressItem"
-						@click="selectAddress(item)"
-					>
+					<div v-for="(item, index) in addressList" :key="index" class="addressItem" @click="selectAddress(item)">
 						<span class="addressName">{{ item.name }}</span>
 						<span v-if="typeof item.address === 'string'" class="addressDetail">{{ item.address }}</span>
 					</div>

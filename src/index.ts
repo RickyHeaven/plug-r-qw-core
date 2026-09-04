@@ -22,6 +22,7 @@ export * from './components'
 export * from './utils/globalFunc'
 export * from './utils/needImportFunc'
 export * from './utils/output'
+export { useComposition } from './utils/useComposition'
 
 export const locale = localeFile.use
 export const i18n = localeFile.i18n
