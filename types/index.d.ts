@@ -1667,6 +1667,10 @@ export declare function setValue(target: any, key: string, value: any): void;
 
 declare type showFunc = (valGroup: Record<string, any>) => boolean;
 
+declare function showHideMenu(display?: boolean): void;
+
+declare function showHideMenu_2(display?: boolean): void;
+
 export declare const ShowHidePanel: __VLS_WithSlots_3<typeof __VLS_component_3, __VLS_Slots_3>;
 
 export declare const ShowHidePanelB: __VLS_WithSlots_4<typeof __VLS_component_4, __VLS_Slots_4>;
@@ -1677,7 +1681,9 @@ export declare const ShowHidePanelB: __VLS_WithSlots_4<typeof __VLS_component_4,
  */
 export declare function siblingElems(elem: ChildNode): any[];
 
-export declare const SideMenu: DefineComponent<__VLS_Props_4, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
+export declare const SideMenu: DefineComponent<__VLS_Props_4, {
+showHideMenu: typeof showHideMenu;
+}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
 "on-change": (...args: any[]) => void;
 }, string, PublicProps, Readonly<__VLS_Props_4> & Readonly<{
 "onOn-change"?: ((...args: any[]) => any) | undefined;
@@ -1685,7 +1691,9 @@ export declare const SideMenu: DefineComponent<__VLS_Props_4, {}, {}, {}, {}, Co
 data: any[];
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>;
 
-export declare const SideMenuPro: DefineComponent<__VLS_Props_5, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
+export declare const SideMenuPro: DefineComponent<__VLS_Props_5, {
+showHideMenu: typeof showHideMenu_2;
+}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
 "on-change": (...args: any[]) => void;
 }, string, PublicProps, Readonly<__VLS_Props_5> & Readonly<{
 "onOn-change"?: ((...args: any[]) => any) | undefined;

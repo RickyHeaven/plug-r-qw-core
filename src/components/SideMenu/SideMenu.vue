@@ -39,8 +39,12 @@
 		{ immediate: true }
 	)
 
-	function showHideMenu() {
-		menuDisplay.value = !menuDisplay.value
+	function showHideMenu(display?: boolean) {
+		if (display !== undefined) {
+			menuDisplay.value = Boolean(display)
+		} else {
+			menuDisplay.value = !menuDisplay.value
+		}
 		localStorage.setItem('menuDisplayR', JSON.stringify(menuDisplay.value))
 		emit('on-change', menuDisplay.value)
 	}
@@ -52,7 +56,9 @@
 				e.classList?.add?.('open')
 			}
 		}
-	}
+		}
+
+		defineExpose({ showHideMenu })
 </script>
 <template>
 	<div ref="menuRef" :class="['menuBoxRP', 'cannotSelect', { light: light }]">
