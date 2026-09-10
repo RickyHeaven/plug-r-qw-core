@@ -41,8 +41,8 @@
 	)
 
 	function showHideMenu(display?: boolean) {
-		if (display !== undefined) {
-			menuDisplay.value = Boolean(display)
+		if (typeof display === 'boolean') {
+			menuDisplay.value = display
 		} else {
 			menuDisplay.value = !menuDisplay.value
 		}

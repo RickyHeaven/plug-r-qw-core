@@ -40,8 +40,8 @@
 	)
 
 	function showHideMenu(display?: boolean) {
-		if (display !== undefined) {
-			menuDisplay.value = Boolean(display)
+		if (typeof display === 'boolean') {
+			menuDisplay.value = display
 		} else {
 			menuDisplay.value = !menuDisplay.value
 		}
@@ -56,9 +56,9 @@
 				e.classList?.add?.('open')
 			}
 		}
-		}
+	}
 
-		defineExpose({ showHideMenu })
+	defineExpose({ showHideMenu })
 </script>
 <template>
 	<div ref="menuRef" :class="['menuBoxRP', 'cannotSelect', { light: light }]">
