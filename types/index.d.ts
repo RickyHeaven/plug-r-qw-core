@@ -1540,6 +1540,7 @@ declare type RenderFunc = (h: any) => VNode;
 declare interface RequestConfigR extends AxiosRequestConfig {
     spin?: boolean;
     noEmptyStr?: boolean;
+    keepNull?: boolean;
 }
 
 declare function reRenderForm(): Promise<unknown>;

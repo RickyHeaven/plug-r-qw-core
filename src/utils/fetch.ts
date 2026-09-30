@@ -24,6 +24,7 @@ export interface ServiceR extends AxiosInstance {
 export interface RequestConfigR extends AxiosRequestConfig {
 	spin?: boolean
 	noEmptyStr?: boolean
+	keepNull?: boolean
 }
 
 // 创建自定义对象
@@ -263,7 +264,13 @@ function checkRequest(
 					if (Array.isArray(data)) {
 						data_ = []
 						for (let e of data) {
-							if (e || e === 0 || e === false || (e === '' && config && !config.noEmptyStr)) {
+							if (
+								e ||
+								e === 0 ||
+								e === false ||
+								(e === '' && config && !config.noEmptyStr) ||
+								(e === null && config?.keepNull)
+							) {
 								data_.push(e)
 							}
 						}
@@ -275,7 +282,8 @@ function checkRequest(
 								(data[key] ||
 									data[key] === 0 ||
 									data[key] === false ||
-									(data[key] === '' && config && !config.noEmptyStr))
+									(data[key] === '' && config && !config.noEmptyStr) ||
+									(data[key] === null && config?.keepNull))
 							) {
 								data_[key] = data[key]
 							}
