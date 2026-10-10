@@ -54,7 +54,9 @@
 
 	const valGroup = ref<Record<string, any>>({}) /*表单项值，对外公开，提交时传递到外层*/
 	const formDataT = ref<any>([]) /*表单结构数据*/
-	const tempKeys = ref<Record<string, any>>({}) /*不对外暴露表单项值*/
+	const tempKeys = ref<Record<string, any>>(
+		{}
+	) /*不对外暴露表单项值，主要缓存表单项的值，用于表单项在显示隐藏状态切换的情况下，保持表单项值不被清空*/
 	let watchGroup: any[] = []
 	const mgrUrl = window?.g?.mgrURL ?? ''
 	/*selectInput的key没有写死在formData中（因为是动态的）,为了在showingKeys中能捕捉到这类组件的key,特声明此变量*/
