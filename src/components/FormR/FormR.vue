@@ -3,7 +3,7 @@
 @author Ricky email:zhangqingcq@foxmail.com-->
 
 <script lang="ts" setup>
-	import { cloneDeep, remove, isEmpty, findIndex } from 'lodash-es'
+	import { cloneDeep, remove, isEmpty, findIndex, isPlainObject } from 'lodash-es'
 	import moment from 'moment'
 	import t from '../../locale/i18nSFC'
 	import { setValue, myTypeof, isValidValue, trimObj, findCollection } from '../../utils/globalFunc'
@@ -1072,52 +1072,59 @@
 						if (Array.isArray(root.collectLabel)) {
 							for (let l of root.collectLabel) {
 								if (l?.key && l.valKey) {
-									const collectTempKey = findTempKey(l.key)
+									const collectTempKeys = findTempKey(l.key)
 									let t: any = null
 
 									if (Array.isArray(targetOption)) {
 										t = targetOption.map((e) => e[l.valKey])
 										valGroup.value[l.key] = t
-										if (collectTempKey) {
-											tempKeys.value[collectTempKey.tempKey] = t
+										if (collectTempKeys) {
+											for (const item of collectTempKeys as FormItem[]) {
+												tempKeys.value[item.tempKey] = t
+											}
 										}
 									} else {
 										if (targetOption && isValidValue(targetOption[l.valKey])) {
 											t = targetOption[l.valKey]
 										}
 										valGroup.value[l.key] = t
-										if (collectTempKey) {
-											if (collectTempKey.booleanVal && typeof t === 'boolean') {
-												tempKeys.value[collectTempKey.tempKey] = t ? 1 : 0
-											} else {
-												tempKeys.value[collectTempKey.tempKey] = t
+										if (collectTempKeys) {
+											for (const item of collectTempKeys as FormItem[]) {
+												if (item.booleanVal && typeof t === 'boolean') {
+													tempKeys.value[item.tempKey] = t ? 1 : 0
+												} else {
+													tempKeys.value[item.tempKey] = t
+												}
 											}
 										}
 									}
 								}
 							}
-						} else if (typeof root.collectLabel === 'object') {
-							if (root.collectLabel.key && root.collectLabel.valKey) {
-								const collectTempKey = findTempKey(root.collectLabel.key)
+						} else if (isPlainObject(root.collectLabel)) {
+							const collectLabelObj = root.collectLabel as Record<string, any>
+							if (collectLabelObj.key && collectLabelObj.valKey) {
+								const collectTempKeys = findTempKey(collectLabelObj.key)
 								let t: any = null
 								if (Array.isArray(targetOption)) {
-									t = targetOption.map(
-										(e) => root.collectLabel && !Array.isArray(root.collectLabel) && e[root.collectLabel.valKey]
-									)
-									valGroup.value[root.collectLabel.key] = t
-									if (collectTempKey) {
-										tempKeys.value[collectTempKey.tempKey] = t
+									t = targetOption.map((e) => e[collectLabelObj.valKey])
+									valGroup.value[collectLabelObj.key] = t
+									if (collectTempKeys) {
+										for (const item of collectTempKeys as FormItem[]) {
+											tempKeys.value[item.tempKey] = t
+										}
 									}
 								} else {
-									if (targetOption && isValidValue(targetOption[root.collectLabel.valKey])) {
-										t = targetOption[root.collectLabel.valKey]
+									if (targetOption && isValidValue(targetOption[collectLabelObj.valKey])) {
+										t = targetOption[collectLabelObj.valKey]
 									}
-									valGroup.value[root.collectLabel.key] = t
-									if (collectTempKey) {
-										if (collectTempKey.booleanVal && typeof t === 'boolean') {
-											tempKeys.value[collectTempKey.tempKey] = t ? 1 : 0
-										} else {
-											tempKeys.value[collectTempKey.tempKey] = t
+									valGroup.value[collectLabelObj.key] = t
+									if (collectTempKeys) {
+										for (const item of collectTempKeys as FormItem[]) {
+											if (item.booleanVal && typeof t === 'boolean') {
+												tempKeys.value[item.tempKey] = t ? 1 : 0
+											} else {
+												tempKeys.value[item.tempKey] = t
+											}
 										}
 									}
 								}
@@ -1216,26 +1223,31 @@
 	}
 
 	/*找到需要收集的key对应的tempKey(私有)*/
-	function findTempKey(k: string) {
+	function findTempKey(k: string, filterFn: ((item: FormItem) => boolean) | null = null) {
+		const matched: FormItem[] = []
 		if (formTeam.value) {
 			for (let e of formDataT.value) {
-				const t = findTempKeyItem(e as FormItem[], k)
-				if (t) {
-					return t
+				for (let root of e as FormItem[]) {
+					if (root.key === k && typeof root.tempKey === 'string') {
+						matched.push(root)
+					}
 				}
 			}
-			return false
-		}
-		return findTempKeyItem(formDataT.value as FormItem[], k)
-	}
-
-	function findTempKeyItem(d: FormItem[], k: string) {
-		for (let root of d) {
-			if (root.key === k) {
-				return root
+		} else {
+			for (let root of formDataT.value as FormItem[]) {
+				if (root.key === k && typeof root.tempKey === 'string') {
+					matched.push(root)
+				}
 			}
 		}
-		return false
+		if (matched.length === 0) {
+			return false
+		}
+		if (filterFn && typeof filterFn === 'function') {
+			const filtered = matched.filter((item) => filterFn(item))
+			return filtered.length > 0 ? filtered : false
+		}
+		return matched
 	}
 
 	/*设置表单项的值（可添加新字段，例如添加隐藏字段，需要提交这个值，但页面不展示，公开）*/
@@ -1319,7 +1331,13 @@
 						}
 					}
 				}
-				valGroup.value[k] = data[k]
+				/*查找带有booleanVal的表单项，如果找到则将值转换为boolean*/
+				const booleanItems = findTempKey(k, (item: FormItem) => Boolean(item.booleanVal && !item.multiple))
+				if (booleanItems) {
+					valGroup.value[k] = Boolean(data[k])
+				} else {
+					valGroup.value[k] = data[k]
+				}
 			} else if (!notClearOthers) {
 				valGroup.value[k] = Array.isArray(valGroup.value[k]) ? [] : null
 			}
