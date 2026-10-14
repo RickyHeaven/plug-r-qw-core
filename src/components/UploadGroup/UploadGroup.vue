@@ -57,6 +57,7 @@
 	const localImgSrcList = shallowRef<any[]>([])
 	let tempStorage: Record<string, any> = {}
 	const fileLength = ref(0)
+	const _isInternalUpload = ref(false)
 	const previewType = computed(() => {
 		if (!props.manualUpload && props.showImg && fileListItemIsIMG.value) {
 			//上传到服务器，图片模式
@@ -186,6 +187,11 @@
 	watch(
 		() => fileList.value,
 		async (after) => {
+			// 自动同步 fileLength（外部 v-model 改变或删除操作时同步，上传操作已手动维护则跳过）
+			if (!_isInternalUpload.value && fileLength.value !== after.length) {
+				fileLength.value = after.length
+			}
+			_isInternalUpload.value = false
 			if (previewType.value === 'localImg') {
 				if (after?.length) {
 					fileSrcList.value = await getFileSrcList(after)
@@ -263,9 +269,6 @@
 			let _f = fileList.value
 			_f?.splice(index, 1)
 			fileList.value = _f
-			if (fileLength.value) {
-				fileLength.value--
-			}
 		}
 	}
 
@@ -329,6 +332,7 @@
 			$swal(t('r.info.title'), t('r.uploadLength', [props.length]), 'warning')
 			return false
 		}
+		_isInternalUpload.value = true
 		fileLength.value++
 		if (props.manualUpload) {
 			if (file) {
@@ -366,6 +370,7 @@
 
 	function uploadSuccess(response: any, file: any, _fileList: any) {
 		if (response?.code === 0) {
+			_isInternalUpload.value = true
 			//触发computed的set
 			let _f = fileList.value
 			file.id = response.data?.[0]?.id
@@ -421,9 +426,6 @@
 			let _f = fileList.value
 			_f?.splice(_fileIdList.indexOf(id), 1)
 			fileList.value = _f
-			if (fileLength.value) {
-				fileLength.value--
-			}
 		}
 	}
 </script>
