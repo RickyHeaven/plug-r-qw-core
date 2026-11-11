@@ -4,17 +4,17 @@
 
 ### 属性
 
-- name 字符串，按钮的文字内容
+- name 字符串，按钮的文字内容，不传时取国际化文本（中文为`'按钮'`）
 
-- icon 字符串，按钮的图标，view-design的icon，如：
+- icon 字符串，按钮的图标，view-design的icon，默认：`'md-download'`，如：
 
 ```
 <IconTxtBtn name="购物车" icon="ios-cart"/>
 ```
 
-- has 字符串，按钮权限，通过自定义指令v-has控制，这里只需要通过该属性给按钮传配好的权限标识就行
+- has 字符串，按钮权限，通过自定义指令v-has控制，这里只需要通过该属性给按钮传配好的权限标识就行，默认：`''`
 
-- size 正整数，按钮图标大小，默认值：`17`
+- size 正整数，按钮图标大小，可通过全局变量`iconTxtBtnIconSize`改变默认值，默认值：`17`
 
 - disabled 布尔对象，禁用按钮，默认：`false`
 

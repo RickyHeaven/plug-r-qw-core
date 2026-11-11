@@ -6,11 +6,11 @@
 
 ps:除支持在此列出的属性，DatePicker其他属性也都支持
 
-- type: 字符串，显示类型，可选值为 date、daterange、datetime、datetimerange、year、month
+- type: 字符串，显示类型，可选值为 date、daterange、datetime、datetimerange、year、month，默认：`'date'`
 
-- value: 日期，可以是 JavaScript 的 Date，例如 new Date() ，也可以是标准的日期格式（区间时是数组），推荐value 使用 v-model
+- modelValue: 日期，可以是 JavaScript 的 Date，例如 new Date() ，也可以是标准的日期格式（区间时是数组），推荐用 v-model 绑定
 
-- options: 对象，选择器额外配置，比如不可选日期与快捷选项，如：
+- options: 对象，选择器额外配置，比如不可选日期与快捷选项，默认：`{}`，如：
 
   ```
   /*可选日期不能小于当天，且区间不超过30天*/
@@ -31,7 +31,7 @@ ps:除支持在此列出的属性，DatePicker其他属性也都支持
 
 - placement: 字符串，日期选择器出现的位置，可选值为top top-start top-end bottom bottom-start bottom-end left left-start left-end right right-start right-end，默认：`bottom-end`
 
-- placeholder： 字符串，选择框提示
+- placeholder： 字符串，选择框提示，不传时取国际化文本（中文为`'选择日期'`）
 
 - clearable： 布尔对象，是否可清除，默认：`true`
 
@@ -42,3 +42,7 @@ ps:除支持在此列出的属性，DatePicker其他属性也都支持
 ps:除支持在此列出的事件，DatePicker其他事件也都支持监听
 
 - on-change: 日期(v-model的值)发生变化时触发
+
+### 注意
+
+- 组件内部固定`editable: false`（输入框不可手动输入日期）且`transfer: true`（弹层放置于body下），如需手动输入日期，请直接使用view-design的DatePicker

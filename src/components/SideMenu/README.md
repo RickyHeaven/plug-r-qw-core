@@ -102,6 +102,10 @@
 
 - light: 布尔值，是否开启浅色模式，默认：`false`
 
+### 事件
+
+- on-change 菜单显示/隐藏状态改变，返回当前显示状态（`true`为显示，`false`为隐藏）
+
 ### 方法
 
 - showHideMenu(display?: boolean)：显示/隐藏菜单，默认切换显示状态，可传入参数指定显示状态。

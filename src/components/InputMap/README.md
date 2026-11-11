@@ -4,7 +4,7 @@
 
 ### 属性
 
-- modelValue 对象，组件的值，推荐用*v-model* 绑定，如：
+- modelValue 对象，组件的值，推荐用*v-model* 绑定，默认：`{}`，如：
 
   ```
     //vue3 SFC script setup
@@ -26,7 +26,7 @@
 
 - height 字符串/正整数，组件高度
 
-- placeholder 字符串，搜索框placeholder，默认值：`'搜索'`
+- placeholder 字符串，搜索框placeholder，不传时取国际化文本（中文为`'搜索'`）
 
 - disabled 布尔对象，禁用组件（仅展示时用），默认：`false`
 

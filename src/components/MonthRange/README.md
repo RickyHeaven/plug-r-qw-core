@@ -4,7 +4,7 @@
 
 ### 属性
 
-- modelValue: 数组，组件的值，推荐用*v-model* 绑定，如：
+- modelValue: 数组，组件的值，推荐用*v-model* 绑定，默认：`['','']`，如：
 
   ```
     //vue3 SFC script setup
@@ -17,7 +17,7 @@
 
 - placement: 字符串，选择框位置，默认值：`‘bottom-start’`
 
-- placeholder: 字符串，日期选择框placeholder，默认值：`'请选择日期'`
+- placeholder: 字符串，日期选择框placeholder，不传时取国际化文本（中文为`'选择日期'`）
 
 - options1: 对象，开始日期选择器配置项
 

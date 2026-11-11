@@ -4,11 +4,11 @@
 
 ### 属性
 
-- modelValue 数组/数字/字符串/文件对象，组件的值，推荐用*v-model* 绑定。
+- modelValue 数组/数字/字符串/文件对象，组件的值，推荐用*v-model* 绑定，默认：`[]`
 
-- url 字符串，文件上传地址（远程上传时），如：`http://myfileurl.com/flie`
+- url 字符串，文件上传地址（远程上传时），如：`http://myfileurl.com/flie`，默认取`window.g.mgrURL + '/web/v1/fsc/file'`（未配置`window.g.mgrURL`时为`''`）
 
-- data 对象，文件上传接口其他参数（远程上传时），如：`{appId: 0,moduleId: 0,typeId: 0}`
+- data 对象，文件上传接口其他参数（远程上传时），默认：`{appId: 0,moduleId: 0,typeId: 0}`
 
 - manualUpload 布尔类型，是否开启本地上传模式，默认false（远程上传），给该字段赋值`true`时开启本地上传，该模式适合需要通过该组件获取到文件对象的集合（v-model），然后自己处理上传到服务器的逻辑的情况。
 
@@ -22,7 +22,7 @@
 
 - multiple 布尔类型，选择文件时是否可以多选，默认false
 
-- format 数组，文件格式限制（后缀名），默认[],不限制
+- format 数组，文件格式限制（后缀名），默认`[]`，不限制
 
 - showImg 布尔类型，是否开启缩略图模式，如果上传列表里有非图片文件，会自动转换成列表模式，默认false,不开启
 
@@ -30,11 +30,7 @@
 
 ### 事件
 
-- on-change 文件id改变，返回改变后的id或id的集合
-
-### 方法
-
-- clear 清空上传列表
+- on-change 组件值改变，返回改变后的值（远程上传模式为文件id或id集合，本地上传模式为文件对象或文件对象集合）
 
 ### 注意
 

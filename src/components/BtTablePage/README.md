@@ -66,11 +66,15 @@
 
 ### 事件：
 
-- on-row-click: 行被点击，返回当前行数据
+- on-selection-change: 表格选择项改变，返回当前已选行数据数组
 
-- on-data-change: 表格数据改变，返回改变后的数据
+- on-data-change: 表格数据改变（包括拉取到新数据、拉取失败等），返回接口原始响应数据（拉取失败时返回错误对象）
 
 ### 方法：
+
+- dataS: 当前表格展示的数据（计算属性，只读）
+
+- selectedIds: 当前已选行的 id 数组（计算属性，只读）
 
 - getTableData: 主动更新表格数据，一般在操作表格数据后使用，条件查询时只需要更改属性`search-data`的值
 
@@ -89,8 +93,6 @@
 - getDataAndClickRow: 单选模式下：拉取表格数据并且自动点击行，如果传 true，则点击当前行，不传则点击 rowClickNum 指定行；非单选模式：仅拉取数据（等同`getTableData`）
 
 - getSelected: 获取已选行数据
-
-- getTableData: 主动拉取(刷新)表格数据
 
 ### 注意：
 

@@ -4,7 +4,7 @@
 
 ### 属性
 
-- title 字符串，header文字内容，默认：`标题`
+- title 字符串，header文字内容，不传时取国际化文本（中文为`'标题'`）
 
 - headerColor 字符串，header文字颜色，默认继承父元素
 
@@ -18,13 +18,13 @@
 
 - on-open 页面打开
 
-- on-close 页面关闭，内部通过v-show实现
+- on-close 页面关闭，内部通过v-show实现，返回布尔值（调用`close(true)`时为`true`，否则为`false`），可用于区分是header返回按钮关闭还是外部主动关闭
 
 ### 方法
 
 - open 打开页面
 
-- close 关闭页面
+- close 关闭页面，可传布尔值，该值会作为on-close事件的参数返回
 
 ### 注意
 

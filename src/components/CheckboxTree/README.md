@@ -4,9 +4,9 @@
 
 ### 属性
 
-- modelValue: 数组，选中节点数据组成的数组（默认只收集叶子节点），推荐使用v-model绑定
+- modelValue: 数组，选中节点数据组成的数组（默认只收集叶子节点），推荐使用v-model绑定，默认：`[]`
 
-- data: 数组，树结构数据，每节点需要有label和collectVal的值对应的属性（如：name,id），子节点为children属性，是否默认展开为expand属性，如：
+- data: 数组，树结构数据，每节点需要有label和collectVal的值对应的属性（如：name,id），子节点为children属性，是否默认展开为expand属性，默认：`[]`，如：
 
 ```
   [
@@ -59,11 +59,11 @@
 
 - inlineLeaf 布尔对象，叶子节点为行内模式，横向排列，默认：`false`
 
-- disabled 布尔对象，禁用整颗树的checkbox选择功能
+- disabled 布尔对象，禁用整颗树的checkbox选择功能，默认：`false`
 
 ### 事件
 
-- on-change 选择的节点发生变化，返回选中的节点数据，默认只返回叶子几点
+- on-change 选择的节点发生变化，返回选中的节点数据，默认只返回叶子节点
 
 ### 注意
 

@@ -8,7 +8,7 @@
 
 - url: 字符串，待选项接口地址，不带条件
 
-- searchData: 对象，待选项接口条件，默认：`{}`
+- searchData: 对象，待选项接口条件，默认：`{size:10}`
 
 - getOptions: 布尔对象，是否拉取待选项,`false`:不拉取，并清空待选项和值；（该属性一般用于重置组件，配合定时器，先赋值为`false`清空组件，再用定时器稍后赋值为`true`以拉取初始待选项数据，`searchWordsRequired`为`true`时不会拉取初始数据），默认：`true`
 
@@ -18,13 +18,13 @@
 
 - optionsValKey: 字符串，待选项value取接口数据中哪个字段，默认：`'id'`
 
-- searchKey: 字符串，搜索框的值在拉取待选项数据的条件中对应的key
+- searchKey: 字符串，搜索框的值在拉取待选项数据的条件中对应的key，默认：`'name'`
 
 - searchWordsRequired: 布尔对象，只有在searchKey对应字段有值时（用户输入内容搜索时）拉取数据，默认：`false`
 
 - collectLabel: 布尔对象，需要在选中时返回出value以外其他字段，配合on-change事件使用，默认：`false`
 
-- placeholder: 字符串，input占位符，默认：`'请输入'`
+- placeholder: 字符串，input占位符，不传时取国际化文本（中文为`'请输入'`）
 
 - disabled: 布尔对象，是否禁用组件，默认：`false`
 
@@ -32,7 +32,7 @@
 
 - on-change: 组件值改变，可以收到除v-model以外其他字段（选项中），collectLabel需为`true`时生效
 
-- 该组件依赖于自定义指令v-loadmore，而该指令触发条件之一是下拉列表必须在y方向滚动（下拉列表最大高度200px，大概7条数据，有过滤选项时出去被过滤掉的还要有7条数据），所以searchData的size字段需大于等于7
+- update-option-finish: 每次拉取待选项数据并渲染完成后触发（滚动加载更多、搜索、重新拉取时均会触发）
 
 ### 支持的view-design中Select原生属性（下面没有列举的一律不支持）：
 
@@ -47,6 +47,8 @@
 - max-tag-placeholder: 方法，隐藏 tag 时显示的内容，参数是剩余项数量
 
 ### 注意
+
+- 该组件依赖于自定义指令v-loadmore，而该指令触发条件之一是下拉列表必须在y方向滚动（下拉列表最大高度200px，大概7条数据，有过滤选项时除去被过滤掉的还要有7条数据），所以searchData的size字段需大于等于7
 
 - url的接口返回数据格式需为指定格式：
 

@@ -8,11 +8,13 @@
 
 - labelWidth 数字，select(label)宽度，默认：`160`
 
-- itemWidth 数字，input和验证信息宽度总和（表单项内容宽度），默认：`200`
+- labelTextAlign 字符串，可选`'left'`、`'center'`、`'right'`，select内容对齐方式，默认：`'right'`
 
-- selectOption 数组，select待选项
+- itemWidth 数字/字符串，input和验证信息宽度总和（表单项内容宽度），默认：`200`
 
-- placeholder 字符串，input占位符，默认：`'请输入'`
+- selectOption 数组，select待选项，默认：`[]`
+
+- placeholder 字符串，input占位符，不传时取国际化文本（中文为`'请输入'`）
 
 - clearable 布尔对象，input是否可清空，默认：`false`
 

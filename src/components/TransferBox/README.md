@@ -20,6 +20,10 @@
 
 - constSearchDataRight: 对象，右侧筛选常量数据，注意：左右一样时可传同一变量，但还是都得传
 
+- leftSearchDataFilter: Function，左侧搜索表单数据过滤函数，入参为用户搜索表单采集的数据，返回处理后的搜索条件，如：`d => ({...d, type:'org'})`
+
+- rightSearchDataFilter: Function，右侧搜索表单数据过滤函数，入参为用户搜索表单采集的数据，返回处理后的搜索条件
+
 - leftTableColumns: 数组，左侧表格结构数据，格式参考[btTablePage文档]('../btTablePage#属性')中`columns`
 
 - rightTableColumns: 数组，右侧表格结构数据，注意：左右一样时可传同一变量，但还是都得传
@@ -52,7 +56,7 @@
 
 - deleteAllMethod: 字符串，全部移除接口请求方式，默认：`'delete'`
 
-- searchFormLabelWith: 数字，搜索表单label的width
+- searchFormLabelWith: 数字，搜索表单label的width，默认取全局配置`searchFormLabelWidth`（默认：`84`）
 
 - usePagePro: 布尔对象，是否使用pagePro组件作为页签，可用全局属性`btTablePageUsePagePro`更改默认值，默认：`false`
 
@@ -66,7 +70,7 @@
 
 - on-data-change-l: 左侧表格数据更改（一般是接口拉取了新的数据），返回值：新的表格数据
 
-- on-data-change-l: 右侧表格数据更改（一般是接口拉取了新的数据），返回值：新的表格数据
+- on-data-change-r: 右侧表格数据更改（一般是接口拉取了新的数据），返回值：新的表格数据
 
 ### 方法：
 

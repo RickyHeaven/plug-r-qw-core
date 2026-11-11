@@ -61,7 +61,7 @@
 
 - separator 字符串，选中的label分隔符，显示全部label时生效，默认值：`'/'`
 
-- placeholder 字符串，选择框placeholder，默认值：`'搜索'`
+- placeholder 字符串，选择框placeholder，不传时取国际化文本（中文为`'请选择'`）
 
 - disabled 布尔对象，禁用组件（仅展示时用），默认：`false`
 

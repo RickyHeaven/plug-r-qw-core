@@ -4,9 +4,9 @@
 
 ### 属性
 
-- modelValue: 数组，选中节点数据组成的数组（默认只收集叶子节点），推荐使用v-model绑定
+- modelValue: 数组，选中节点数据组成的数组（默认只收集叶子节点），推荐使用v-model绑定，默认：`[]`
 
-- data: 数组，复选框组结构数据，每节点需要有label和collectVal的值对应的属性（如：name,id），子节点为children属性，如：
+- data: 数组，复选框组结构数据，每节点需要有label和collectVal的值对应的属性（如：name,id），子节点为children属性，默认：`[]`，如：
 
 ```
   [
@@ -51,7 +51,7 @@
 
 - leaf 布尔对象，叶子节点模式，v-model只返回叶子节点数据，任何选择操作都会选择叶子节点，默认：`true`
 
-- disabled 布尔对象，禁用整颗树的checkbox选择功能
+- disabled 布尔对象，禁用整颗树的checkbox选择功能，默认：`false`
 
 ### 事件
 

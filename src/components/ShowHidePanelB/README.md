@@ -4,7 +4,7 @@
 
 ### 属性
 
-- modelValue 布尔对象，面板是否展开，建议用v-model绑定，如：
+- modelValue 布尔对象，面板是否展开，建议用v-model绑定，默认：`false`，如：
 
 ```
 <show-hide-panel-b v-model="open">内容</show-hide-panel-b>
@@ -12,4 +12,4 @@
 open为你定义的变量
 ```
 
-- bg 字符串，面板背景色(默认白色)，如：`bg:'#fff'`
+- bg 字符串，面板背景色，默认：`'transparent'`（透明背景），如：`bg:'#fff'`

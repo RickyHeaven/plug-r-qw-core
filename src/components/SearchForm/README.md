@@ -8,7 +8,13 @@
 
 - formRules 对象，组件内表单验证规则，参考formR
 
+- labelWidth 数字，表单项标签宽度，默认取全局配置`searchFormLabelWidth`（默认：`84`）
+
+- itemWidth 数字，表单项内容宽度，用于行内表单，默认取全局配置`searchFormItemWidth`（默认：`202`）
+
 - teamClass 字符串，分组表单-组容器的class，用于布局和样式控制，默认：`formTeamBox`
+
+- showInlineOkBt 布尔对象，显示查询按钮，默认：`true`
 
 - showInlineClearBt 布尔对象，显示清空按钮，默认：`true`
 
@@ -28,7 +34,7 @@
 
 - submit 主动提交组件内整个表单采集的值
 
-- getValGroup 获取用户已填数据，和submit有显著区别，submit会校验表单，并提交on-submit事件。
+- getValGroup 获取用户已填数据，和submit有显著区别，submit会校验表单，并提交on-search事件。
 
 - resetForm 重置表单，该方法会清空表单值并刷新dom，异步方法，表单项默认值不会被清除，详见[FormR](../FormR/README.md#方法)，注意并不是重新渲染表单，重新渲染方法为 reRenderForm
 
@@ -39,6 +45,14 @@
 - reValidate 手动验证表单项
 
 - validate 主动验证组件内整个表单，一般用不上
+
+- setItemToValGroup 设置指定表单项的值，详见[FormR](../FormR/README.md#方法)
+
+- updateValGroup 更新表单值对象，详见[FormR](../FormR/README.md#方法)
+
+- updateFormDataT 更新表单结构数据，详见[FormR](../FormR/README.md#方法)
+
+- changeLoading 改变表单loading状态，详见[FormR](../FormR/README.md#方法)
 
 ### 注意
 

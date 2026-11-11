@@ -4,19 +4,27 @@
 
 ### 属性
 
-- modelValue 字符串，编辑器内容，推荐使用v-model绑定
+- modelValue 字符串，编辑器内容，推荐使用v-model绑定，默认：`'<p></p>'`
 
-- toolbarConfig 对象，工具栏配置，参考[wangEditor5 工具栏配置](https://www.wangeditor.com/v5/toolbar-config.html)
+- toolbarConfig 对象，工具栏配置，参考[wangEditor5 工具栏配置](https://www.wangeditor.com/v5/toolbar-config.html)，默认：`{}`
 
-- editorConfig 对象，编辑器配置，参考[wangEditor5 编辑器配置](https://www.wangeditor.com/v5/editor-config.html)
+- editorConfig 对象，编辑器配置，参考[wangEditor5 编辑器配置](https://www.wangeditor.com/v5/editor-config.html)，默认：`{}`
 
 - mode 字符串，`'default'` 默认模式 - 集成了 wangEditor 所有功能；`'simple'` 简洁模式 - 仅有部分常见功能，但更加简洁易用，默认：`'default'`
 
 - height 正数/字符串，编辑区域高度，默认：`300`
 
-- placeholder 字符串，占位符，默认：`请输入`
+- imgUploadUrl 字符串，图片上传接口地址，使用编辑器自带图片上传逻辑时传入，接口返回数据格式见下方“注意”
+
+- videoUploadUrl 字符串，视频上传接口地址，使用编辑器自带视频上传逻辑时传入，接口返回数据格式见下方“注意”
+
+- placeholder 字符串，占位符，不传时取国际化文本（中文为`'请输入'`）
 
 - disabled 布尔对象，禁用编辑功能，默认：`false`
+
+### 事件
+
+- on-change 编辑器内容改变，返回改变后的内容（如果使用v-model绑定组件的值，这个事件就是多余的）
 
 ### 注意
 
