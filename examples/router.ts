@@ -54,6 +54,22 @@ const router = createRouter({
 			}
 		},
 		{
+			path: '/checkboxGroupThreeClass',
+			name: 'CheckboxGroupThreeClass',
+			component: () => import('@/views/CheckboxGroupThreeClassEX.vue'),
+			meta: {
+				desc: '三类复选框组'
+			}
+		},
+		{
+			path: '/checkboxGroupTwoClass',
+			name: 'CheckboxGroupTwoClass',
+			component: () => import('@/views/CheckboxGroupTwoClassEX.vue'),
+			meta: {
+				desc: '两类复选框组'
+			}
+		},
+		{
 			path: '/checkboxTree',
 			name: 'CheckboxTree',
 			component: () => import('@/views/CheckboxTreeEX.vue'),
@@ -75,6 +91,30 @@ const router = createRouter({
 			component: () => import('@/views/EditorProEX.vue'),
 			meta: {
 				desc: '富文本编辑器'
+			}
+		},
+		{
+			path: '/findCollection',
+			name: 'FindCollection',
+			component: () => import('@/views/FindCollectionEX.vue'),
+			meta: {
+				desc: '查找集合'
+			}
+		},
+		{
+			path: '/formGroup',
+			name: 'FormGroup',
+			component: () => import('@/views/FormGroupEX.vue'),
+			meta: {
+				desc: '表单组'
+			}
+		},
+		{
+			path: '/formModal',
+			name: 'FormModal',
+			component: () => import('@/views/FormModalEX.vue'),
+			meta: {
+				desc: '表单弹框'
 			}
 		},
 		{
@@ -163,6 +203,14 @@ const router = createRouter({
 			}
 		},
 		{
+			path: '/searchForm',
+			name: 'SearchForm',
+			component: () => import('@/views/SearchFormEX.vue'),
+			meta: {
+				desc: '搜索表单'
+			}
+		},
+		{
 			path: '/selectInput',
 			name: 'SelectInput',
 			component: () => import('@/views/SelectInputEX.vue'),
@@ -179,6 +227,22 @@ const router = createRouter({
 			}
 		},
 		{
+			path: '/showHidePanel',
+			name: 'ShowHidePanel',
+			component: () => import('@/views/ShowHidePanelEX.vue'),
+			meta: {
+				desc: '显示隐藏面板'
+			}
+		},
+		{
+			path: '/showHidePanelB',
+			name: 'ShowHidePanelB',
+			component: () => import('@/views/ShowHidePanelBEX.vue'),
+			meta: {
+				desc: '显示隐藏面板B'
+			}
+		},
+		{
 			path: '/sichuanCuisine/combo/sideMenu',
 			name: 'SideMenu',
 			component: () => import('@/views/SideMenuEX.vue'),
@@ -192,6 +256,22 @@ const router = createRouter({
 			component: () => import('@/views/SideMenuProEX.vue'),
 			meta: {
 				desc: '左侧菜单Pro'
+			}
+		},
+		{
+			path: '/tableIconBtn',
+			name: 'TableIconBtn',
+			component: () => import('@/views/TableIconBtnEX.vue'),
+			meta: {
+				desc: '表格图标按钮'
+			}
+		},
+		{
+			path: '/tableSearch',
+			name: 'TableSearch',
+			component: () => import('@/views/TableSearchEX.vue'),
+			meta: {
+				desc: '表格搜索'
 			}
 		},
 		{
